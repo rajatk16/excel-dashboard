@@ -1,26 +1,10 @@
-import {
-  existsSync,
-  readdirSync,
-  rmSync
-} from 'node:fs';
-
-import {
-  dirname,
-  join,
-  relative,
-  resolve
-} from 'node:path';
-
+import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const scriptDirectory = dirname(
-  fileURLToPath(import.meta.url)
-);
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 
-const rootDirectory = resolve(
-  scriptDirectory,
-  '..'
-);
+const rootDirectory = resolve(scriptDirectory, '..');
 
 const cleanAll = process.argv.includes('--all');
 
@@ -32,7 +16,7 @@ const buildDirectories = [
   '.cache',
   '.vite',
   'test-results',
-  'playwright-report'
+  'playwright-report',
 ];
 
 function removePath(targetPath) {
@@ -44,49 +28,34 @@ function removePath(targetPath) {
     recursive: true,
     force: true,
     maxRetries: 3,
-    retryDelay: 100
+    retryDelay: 100,
   });
 
-  console.log(
-    `Removed ${relative(rootDirectory, targetPath)}`
-  );
+  console.log(`Removed ${relative(rootDirectory, targetPath)}`);
 }
 
 function getWorkspaceDirectories() {
   const workspaceDirectories = [];
 
   for (const parent of ['apps', 'packages']) {
-    const parentDirectory = join(
-      rootDirectory,
-      parent
-    );
+    const parentDirectory = join(rootDirectory, parent);
 
     if (!existsSync(parentDirectory)) {
       continue;
     }
 
-    const entries = readdirSync(
-      parentDirectory,
-      {
-        withFileTypes: true
-      }
-    );
+    const entries = readdirSync(parentDirectory, {
+      withFileTypes: true,
+    });
 
     for (const entry of entries) {
       if (!entry.isDirectory()) {
         continue;
       }
 
-      const workspaceDirectory = join(
-        parentDirectory,
-        entry.name
-      );
+      const workspaceDirectory = join(parentDirectory, entry.name);
 
-      if (
-        existsSync(
-          join(workspaceDirectory, 'package.json')
-        )
-      ) {
+      if (existsSync(join(workspaceDirectory, 'package.json'))) {
         workspaceDirectories.push(workspaceDirectory);
       }
     }
@@ -97,38 +66,27 @@ function getWorkspaceDirectories() {
 
 function cleanDirectory(directory) {
   for (const buildDirectory of buildDirectories) {
-    removePath(
-      join(directory, buildDirectory)
-    );
+    removePath(join(directory, buildDirectory));
   }
 
   const entries = readdirSync(directory, {
-    withFileTypes: true
+    withFileTypes: true,
   });
 
   for (const entry of entries) {
-    if (
-      entry.isFile() &&
-      entry.name.endsWith('.tsbuildinfo')
-    ) {
-      removePath(
-        join(directory, entry.name)
-      );
+    if (entry.isFile() && entry.name.endsWith('.tsbuildinfo')) {
+      removePath(join(directory, entry.name));
     }
   }
 
   if (cleanAll) {
-    removePath(
-      join(directory, 'node_modules')
-    );
+    removePath(join(directory, 'node_modules'));
   }
 }
 
 function main() {
   console.log(
-    cleanAll
-      ? 'Cleaning build artifacts and dependencies...'
-      : 'Cleaning build artifacts...'
+    cleanAll ? 'Cleaning build artifacts and dependencies...' : 'Cleaning build artifacts...',
   );
 
   const workspaces = getWorkspaceDirectories();
@@ -142,9 +100,7 @@ function main() {
   console.log('\nRepository cleanup complete.');
 
   if (cleanAll) {
-    console.log(
-      'Run "npm ci" to reinstall dependencies.'
-    );
+    console.log('Run "npm ci" to reinstall dependencies.');
   }
 }
 
@@ -153,9 +109,7 @@ try {
 } catch (error) {
   console.error('Repository cleanup failed.');
 
-  console.error(
-    error instanceof Error ? error.message : String(error)
-  );
+  console.error(error instanceof Error ? error.message : String(error));
 
   process.exitCode = 1;
 }

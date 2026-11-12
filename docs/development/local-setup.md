@@ -95,3 +95,48 @@ npm ci
 ```bash
 npm run doctor
 ```
+
+## Code Quality
+
+Run linting across the repository:
+
+```bash
+npm run lint
+```
+
+Automatically fix supported lint violations:
+
+```bash
+npm run lint:fix
+```
+
+Format the repository:
+
+```bash
+npm run format
+```
+
+Check formatting without changing files:
+
+```bash
+npm run format:check
+```
+
+Lint an individual workspace:
+
+```bash
+npm run lint -w @excel-dashboard/web
+```
+
+## Editor Integration
+
+Install the recommended VS Code extensions.
+
+Use the workspace TypeScript version.
+
+Prettier formats supported files on save.
+
+ESLint applies supported fixes on explicit save.
+
+Command-line linting and formatting checks remain
+the authoritative validation mechanism.
