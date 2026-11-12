@@ -1,0 +1,85 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": [
+    ".nvmrc",
+    ".node-version",
+    ".npmrc",
+    "tsconfig.json",
+    "packages/typescript-config/*.json"
+  ],
+  "globalEnv": [
+    "NODE_ENV"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULTS",
+        ".env*"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        "!.env*"
+      ],
+      "env": [
+        "VITE_*"
+      ]
+    },
+    "dev": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": [
+        "PORT",
+        "HOST",
+        "LOG_LEVEL",
+        "DATABASE_URL",
+        "REDIS_URL",
+        "FIREBASE_*",
+        "GOOGLE_APPLICATION_CREDENTIALS",
+        "AWS_*",
+        "S3_*",
+        "VITE_*"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false
+    },
+    "typecheck": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.test*"
+      ]
+    },
+    "test:coverage": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
+    }
+  }
+}

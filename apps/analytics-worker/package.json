@@ -1,0 +1,10 @@
+{
+  "name": "@excel-dashboard/analytics-worker",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Background worker for analytical query execution.",
+  "type": "commonjs",
+  "devDependencies": {
+    "@excel-dashboard/typescript-config": "0.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@excel-dashboard/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Excel Dashboard NestJS REST API.",
+  "type": "commonjs",
+  "devDependencies": {
+    "@excel-dashboard/typescript-config": "0.0.0"
+  }
+}

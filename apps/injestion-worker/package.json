@@ -1,0 +1,10 @@
+{
+  "name": "@excel-dashboard/ingestion-worker",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Background worker for spreadsheet ingestion and dataset processing.",
+  "type": "commonjs",
+  "devDependencies": {
+    "@excel-dashboard/typescript-config": "0.0.0"
+  }
+}
