@@ -1,0 +1,77 @@
+# Dependencies
+**/node_modules/
+**/.npm/
+
+# Build outputs
+**/dist/
+**/build/
+**/out/
+**/*.tsbuildinfo
+
+# Turborepo
+**/.turbo/
+dependency-graph.html
+
+# Testing
+**/coverage/
+**/test-results/
+**/playwright-report/
+
+# Generated code
+**/generated/
+**/*.min.js
+**/*.min.css
+
+# Cache
+**/.cache/
+**/.vite/
+**/.eslintcache
+
+# Environment and credentials
+**/.env
+**/.env.*
+**/credentials/
+**/secrets/
+**/service-account*.json
+**/serviceAccountKey*.json
+**/*.pem
+**/*.key
+
+# Local data
+**/.local-data/
+**/tmp/
+**/temp/
+**/uploads/
+**/exports/
+
+# Infrastructure state
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+
+# Firebase
+**/.firebase/
+
+# Logs
+**/*.log
+
+# Lockfiles
+package-lock.json
+**/package-lock.json
+**/pnpm-lock.yaml
+**/yarn.lock
+
+# Binary files
+**/*.xlsx
+**/*.xls
+**/*.parquet
+**/*.pdf
+**/*.zip
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.woff
+**/*.woff2

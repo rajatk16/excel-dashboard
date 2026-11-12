@@ -16,18 +16,21 @@ using Turborepo and npm workspaces.
 
 ### Applications
 
-| Application | Description |
-|-------------|-------------|
-| web | React frontend |
-| api | NestJS REST API |
-| ingestion-worker | Spreadsheet ingestion |
+| Application      | Description                |
+| ---------------- | -------------------------- |
+| web              | React frontend             |
+| api              | NestJS REST API            |
+| ingestion-worker | Spreadsheet ingestion      |
 | analytics-worker | Analytical query execution |
 
 ### Shared Packages
 
-| Package | Description |
-|---------|-------------|
-| typescript-config | Shared TypeScript configuration |
+| Package           | Description                       |
+| ----------------- | --------------------------------- |
+| typescript-config | Shared TypeScript configuration   |
+| eslint-config     | Shared ESLint flat configurations |
+
+Additional packages will be introduced incrementally.
 
 Additional packages will be introduced incrementally.
 
@@ -69,17 +72,21 @@ for subsequent infrastructure implementation.
 
 ## Development Commands
 
-| Command | Description |
-|---------|-------------|
-| npm run doctor | Validate the development environment |
-| npm run dev | Run available development tasks |
-| npm run build | Build implemented workspaces |
-| npm run lint | Run linting |
-| npm run typecheck | Run TypeScript checks |
-| npm run test | Run tests |
-| npm run check | Run all quality checks |
-| npm run clean | Remove generated artifacts |
-| npm run clean:all | Remove artifacts and dependencies |
+| Command               | Description                               |
+| --------------------- | ----------------------------------------- |
+| npm run doctor        | Validate the development environment      |
+| npm run dev           | Run available development tasks           |
+| npm run build         | Build implemented workspaces              |
+| npm run lint          | Lint the repository                       |
+| npm run lint:affected | Lint affected workspaces and root tooling |
+| npm run lint:fix      | Automatically fix lint violations         |
+| npm run format        | Format the repository                     |
+| npm run format:check  | Check repository formatting               |
+| npm run typecheck     | Run TypeScript checks                     |
+| npm run test          | Run tests                                 |
+| npm run check         | Run all quality checks                    |
+| npm run clean         | Remove generated artifacts                |
+| npm run clean:all     | Remove artifacts and dependencies         |
 
 Application development, build and test commands become
 operational as their corresponding applications are implemented.
@@ -100,13 +107,15 @@ docs/
 - [Monorepo Architecture](docs/architecture/monorepo.md)
 - [Monorepo ADR](docs/adr/0001-monorepo-strategy.md)
 - [Local Development](docs/development/local-setup.md)
+- [Coding Standards](docs/development/coding-standards.md)
+- [Code Quality ADR](docs/adr/0002-code-quality-strategy.md)
 
 ## Development Status
 
 Phase 1: Engineering Foundation
 
 - [x] PR 1.1 - Monorepo Foundation
-- [ ] PR 1.2 - ESLint and Prettier
+- [x] PR 1.2 - ESLint and Prettier
 - [ ] PR 1.3 - React and Vite
 - [ ] PR 1.4 - Tailwind and shadcn/ui
 - [ ] PR 1.5 - NestJS API

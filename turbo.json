@@ -8,31 +8,16 @@
     "tsconfig.json",
     "packages/typescript-config/*.json"
   ],
-  "globalEnv": [
-    "NODE_ENV"
-  ],
+  "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULTS",
-        ".env*"
-      ],
-      "outputs": [
-        "dist/**",
-        "build/**",
-        "!.env*"
-      ],
-      "env": [
-        "VITE_*"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", "build/**", "!.env*"],
+      "env": ["VITE_*"]
     },
     "dev": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true,
       "passThroughEnv": [
@@ -49,37 +34,30 @@
       ]
     },
     "lint": {
-      "dependsOn": [
-        "^build"
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/eslint-config/**",
+        "$TURBO_ROOT$/packages/typescript-config/**"
       ],
       "outputs": []
     },
     "lint:fix": {
+      "dependsOn": ["^build"],
       "cache": false
     },
     "typecheck": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": []
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "outputs": [],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env.test*"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env.test*"]
     },
     "test:coverage": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "coverage/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
     }
   }
 }

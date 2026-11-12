@@ -1,10 +1,10 @@
 {
   "name": "excel-dashboard",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
-  "description": "A multi-tenant SaaS platform for transforming spreadsheets into interactive analytics dashboard",
+  "description": "A multi-tenant SaaS platform for transforming spreadsheets into interactive analytics dashboards.",
   "license": "UNLICENSED",
-  "packageManager": "npm@11.19.0",
+  "packageManager": "npm@11.6.2",
   "engines": {
     "node": ">=24.0.0 <25.0.0",
     "npm": ">=11.6.2 <12.0.0"
@@ -13,33 +13,37 @@
     "apps/*",
     "packages/*"
   ],
-  "main": "index.js",
   "scripts": {
     "preinstall": "node scripts/check-environment.mjs",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=@excel-dashboard/web",
     "dev:api": "turbo run dev --filter=@excel-dashboard/api",
-    "dev:injestion": "turbo run dev --filter=@excel-dashboard/injestion-worker",
+    "dev:ingestion": "turbo run dev --filter=@excel-dashboard/ingestion-worker",
     "dev:analytics": "turbo run dev --filter=@excel-dashboard/analytics-worker",
     "build": "turbo run build",
     "build:affected": "turbo run build --affected",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
+    "lint": "npm run lint:root && turbo run lint",
+    "lint:root": "eslint . --max-warnings=0",
+    "lint:affected": "npm run lint:root && turbo run lint --affected",
+    "lint:fix": "npm run lint:root:fix && turbo run lint:fix",
+    "lint:root:fix": "eslint . --fix --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:affected": "turbo run test --affected",
     "test:coverage": "turbo run test:coverage",
-    "check": "turbo run lint typecheck test build",
+    "check": "npm run format:check && npm run lint && turbo run typecheck test build",
     "clean": "node scripts/clean.mjs",
     "clean:all": "node scripts/clean.mjs --all",
     "doctor": "node scripts/check-environment.mjs",
     "graph": "turbo run build --graph=dependency-graph.html"
   },
   "devDependencies": {
-    "turbo": "2.11.11",
-    "typescript": "7.0.2"
-  },
-  "keywords": [],
-  "author": "",
-  "type": "commonjs"
+    "@excel-dashboard/eslint-config": "0.0.0",
+    "eslint": "9.39.1",
+    "prettier": "3.6.2",
+    "turbo": "2.5.8",
+    "typescript": "5.9.3"
+  }
 }
