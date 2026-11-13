@@ -1,35 +1,57 @@
-import { Link } from "react-router-dom";
+import { Info } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-import { ROUTE_PATHS } from "@/app/router/routePaths";
-import { usePageTitle } from "@/lib/utils/pageTitle"
+import { Alert, AlertDescription, AlertTitle } from '@excel-dashboard/ui/components/alert';
+import { Button } from '@excel-dashboard/ui/components/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@excel-dashboard/ui/components/card';
+
+import { ROUTE_PATHS } from '@/app/router/routePaths';
+import { usePageTitle } from '@/lib/utils/pageTitle';
 
 export const Component = () => {
   usePageTitle('Create an account');
 
   return (
-    <section className="auth-card">
-      <p className="eyebrow">Get started</p>
+    <Card className="shadow-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">
+          <h1>Create an account</h1>
+        </CardTitle>
 
-      <h1>Create an account</h1>
+        <CardDescription>Start building interactive analytics dashboards.</CardDescription>
+      </CardHeader>
 
-      <p className="muted-text">
-        Create your account to start building interactive analytics dashboards.
-      </p>
+      <CardContent>
+        <Alert>
+          <Info aria-hidden="true" />
 
-      <p className="notice">
-        Account registration will be available after authentication is implemented.
-      </p>
+          <AlertTitle>Registration coming soon</AlertTitle>
 
-      <p className="auth-switch">
-        Already have an account?{' '}
-        <Link to={ROUTE_PATHS.LOGIN}>
-          Sign in
-        </Link>
-      </p>
+          <AlertDescription>
+            Account registration will become available after authentication is implemented.
+          </AlertDescription>
+        </Alert>
+      </CardContent>
 
-      <Link to={ROUTE_PATHS.HOME} className="button button-secondary">
-        Return home
-      </Link>
-    </section>
-  )
-}
+      <CardFooter className="flex-col gap-4">
+        <Button variant="outline" className="w-full" asChild>
+          <Link to={ROUTE_PATHS.HOME}>Return home</Link>
+        </Button>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link to={ROUTE_PATHS.LOGIN} className="font-medium text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
+  );
+};

@@ -1,4 +1,4 @@
-import { Outlet, useNavigation } from "react-router-dom"
+import { Outlet, useNavigation } from 'react-router-dom';
 
 export const RootLayout = () => {
   const navigation = useNavigation();
@@ -9,10 +9,15 @@ export const RootLayout = () => {
     <>
       {isNavigating && (
         <div
-          className="navigation-progress" role="status" aria-label="Loading page"
-        />
+          role="status"
+          aria-label="Loading page"
+          className="fixed inset-x-0 top-0 z-100 h-0.5 overflow-hidden bg-primary/20"
+        >
+          <div className="h-full w-1/2 animate-pulse bg-primary" />
+        </div>
       )}
+
       <Outlet />
     </>
-  )
-}
+  );
+};

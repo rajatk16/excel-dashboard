@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import { PageLoader } from "@/components/feedback/PageLoader";
-import { RouteErrorBoundary } from "@/components/feedback/RouteErrorBoundary";
+import { PageLoader } from '@/components/feedback/PageLoader';
+import { RouteErrorBoundary } from '@/components/feedback/RouteErrorBoundary';
 
-import { AppLayout } from "../layouts/AppLayout";
-import { AuthLayout } from "../layouts/AuthLayout";
-import { PublicLayout } from "../layouts/PublicLayout";
-import { RootLayout } from "../layouts/RootLayout";
+import { AppLayout } from '../layouts/AppLayout';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { PublicLayout } from '../layouts/PublicLayout';
+import { RootLayout } from '../layouts/RootLayout';
 
-import { ROUTE_PATHS } from "./routePaths";
+import { ROUTE_PATHS } from './routePaths';
 
 export const router = createBrowserRouter([
   {
@@ -22,26 +22,26 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: () => import('@/features/landing/pages/LandingPage')
+            lazy: () => import('@/features/landing/pages/LandingPage'),
           },
           {
             path: '*',
-            lazy: () => import('@/features/errors/pages/NotFoundPage')
-          }
-        ]
+            lazy: () => import('@/features/errors/pages/NotFoundPage'),
+          },
+        ],
       },
       {
         Component: AuthLayout,
         children: [
           {
             path: ROUTE_PATHS.LOGIN,
-            lazy: () => import('@/features/auth/pages/LoginPage')
+            lazy: () => import('@/features/auth/pages/LoginPage'),
           },
           {
             path: ROUTE_PATHS.REGISTER,
-            lazy: () => import('@/features/auth/pages/RegisterPage')
-          }
-        ]
+            lazy: () => import('@/features/auth/pages/RegisterPage'),
+          },
+        ],
       },
       {
         path: ROUTE_PATHS.APP,
@@ -49,14 +49,14 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: () => import('@/features/overview/pages/OverviewPage')
+            lazy: () => import('@/features/overview/pages/OverviewPage'),
           },
           {
             path: '*',
             lazy: () => import('@/features/errors/pages/NotFoundPage'),
           },
-        ]
-      }
-    ]
-  }
+        ],
+      },
+    ],
+  },
 ]);

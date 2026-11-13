@@ -2,19 +2,12 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@excel-dashboard/typescript-config/react.json",
   "compilerOptions": {
-    "composite": true,
     "incremental": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsconfig.app.tsbuildinfo",
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

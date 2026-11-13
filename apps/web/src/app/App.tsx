@@ -1,11 +1,9 @@
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from 'react-router-dom';
 
 import { router } from '@/app/router/Router';
-import { AppErrorBoundary } from "@/components/feedback/ErrorBoundary";
+import { AppErrorBoundary } from '@/components/feedback/ErrorBoundary';
 
-import { AppProviders } from "./providers/AppProviders";
-
-
+import { AppProviders } from './providers/AppProviders';
 
 export const App = () => (
   <AppErrorBoundary>
@@ -13,4 +11,4 @@ export const App = () => (
       <RouterProvider router={router} />
     </AppProviders>
   </AppErrorBoundary>
-)
+);

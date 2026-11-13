@@ -1,83 +1,84 @@
-# Excel Dashboard Web
+# @excel-dashboard/ui
 
-React frontend for the Excel Dashboard SaaS platform.
+Shared React UI components and design system for the Excel Dashboard platform.
 
 ## Technology
 
 - React
 - TypeScript
-- Vite
-- React Router
-- Zod
+- Tailwind CSS v4
+- Radix UI
+- shadcn/ui conventions
+- Class Variance Authority
+- Lucide React
+- Sonner
+
+## Usage
+
+```tsx
+import { Button } from '@excel-dashboard/ui/components/button';
+
+export function Example() {
+  return <Button>Save changes</Button>;
+}
+```
+
+## Styles
+
+The consuming application must import Tailwind CSS and the shared design tokens.
+
+```css
+@import 'tailwindcss';
+@import '@excel-dashboard/ui/styles/globals.css';
+```
+
+The consuming application must also configure Tailwind to scan the UI package source files.
+
+## Theme
+
+Wrap the application with ThemeProvider.
+
+```tsx
+import { ThemeProvider } from '@excel-dashboard/ui/theme/provider';
+
+<ThemeProvider defaultTheme="system">
+  <App />
+</ThemeProvider>;
+```
+
+Access the theme through useTheme.
+
+## Components
+
+- Alert
+- Badge
+- Button
+- Card
+- Dropdown Menu
+- Input
+- Label
+- Separator
+- Sheet
+- Skeleton
+- Toaster
 
 ## Development
 
-Run all commands from the repository root.
-
-### Install Dependencies
-
 ```bash
-npm ci
+npm run lint -w @excel-dashboard/ui
+npm run typecheck -w @excel-dashboard/ui
 ```
-
-### Configure Environment
-
-```bash
-cp apps/web/.env.example apps/web/.env.local
-```
-
-### Start Development Server
-
-```bash
-npm run dev:web
-```
-
-The application is available at:
-
-http://localhost:3000
-
-## Commands
-
-| Command | Description |
-| --- | --- |
-| npm run dev:web | Start frontend development |
-| npm run preview:web | Preview production build |
-| npm run build | Build applications |
-| npm run typecheck | Run TypeScript checks |
-| npm run lint | Run ESLint |
-| npm run format:check | Verify formatting |
-
-## Routes
-
-| Route | Description |
-| --- | --- |
-| / | Landing page |
-| /login | Login placeholder |
-| /register | Registration placeholder |
-| /app | Application overview |
 
 ## Architecture
 
-The application uses feature-based organization, nested layouts, lazy route modules, validated environment configuration, and error boundaries.
+This package contains presentation components and design system infrastructure.
 
-## Environment Variables
+It must not depend on application routes, API clients, authentication stores, or business features.
 
-| Variable | Description |
-| --- | --- |
-| VITE_APP_NAME | Application display name |
-| VITE_APP_ENV | Application environment |
-| VITE_API_BASE_URL | Backend API base URL |
+Components are distributed as TypeScript source and compiled by the consuming application.
 
-All VITE-prefixed variables are public.
+## Accessibility
 
-## Production Build
+Interactive components use accessible Radix UI primitives where appropriate.
 
-The production bundle is generated under dist/.
-
-The hosting layer must support SPA route fallback.
-
-## Implementation Status
-
-The frontend application foundation is implemented.
-
-Authentication, workspace management, data ingestion, analytics, and dashboard functionality are not yet available.
+Consumers remain responsible for accessible labels, descriptions, keyboard behavior, and page semantics.

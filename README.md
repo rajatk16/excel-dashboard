@@ -25,10 +25,11 @@ using Turborepo and npm workspaces.
 
 ### Shared Packages
 
-| Package           | Description                       |
-| ----------------- | --------------------------------- |
-| typescript-config | Shared TypeScript configuration   |
-| eslint-config     | Shared ESLint flat configurations |
+| Package           | Description                               |
+| ----------------- | ----------------------------------------- |
+| typescript-config | Shared TypeScript configuration           |
+| eslint-config     | Shared ESLint flat configurations         |
+| ui                | Shared React components and design system |
 
 Additional packages will be introduced incrementally.
 
@@ -87,7 +88,7 @@ for subsequent infrastructure implementation.
 | npm run check         | Run all quality checks                    |
 | npm run clean         | Remove generated artifacts                |
 | npm run clean:all     | Remove artifacts and dependencies         |
-| npm run preview:web | Preview the frontend production build |
+| npm run preview:web   | Preview the frontend production build     |
 
 Application development, build and test commands become
 operational as their corresponding applications are implemented.
@@ -112,6 +113,8 @@ docs/
 - [Code Quality ADR](docs/adr/0002-code-quality-strategy.md)
 - [Frontend Architecture](docs/architecture/frontend.md)
 - [Frontend Architecture ADR](docs/adr/0003-frontend-architecture.md)
+- [Design System](docs/architecture/design-system.md)
+- [Design System ADR](docs/adr/0004-shared-design-system.md)
 
 ## Development Status
 

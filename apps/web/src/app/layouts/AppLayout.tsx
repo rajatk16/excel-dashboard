@@ -1,52 +1,24 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
-import { Brand } from "@/components/common/Brand";
-
-import { ROUTE_PATHS } from "../router/routePaths";
+import { AppHeader } from '@/components/navigation/AppHeader';
+import { AppSidebar } from '@/components/navigation/AppSidebar';
 
 export const AppLayout = () => (
-  <div className="app-layout">
-    <a href="#app-content" className="skip-link">
+  <div className="flex min-h-dvh flex-col">
+    <a className="skip-link" href="#app-content">
       Skip to content
     </a>
 
-    <header className="app-header">
-      <Brand />
+    <AppHeader />
 
-      <div className="header-actions">
-        <span className="development-label">
-          Development preview
-        </span>
+    <div className="flex flex-1">
+      <AppSidebar />
 
-        <Link to={ROUTE_PATHS.HOME} className="button button-ghost">Back to home</Link>
-      </div>
-    </header>
-
-    <div className="app-body">
-      <aside className="app-sidebar">
-        <p className="sidebar-heading">Application</p>
-        <nav aria-label="Application navigation">
-          <NavLink
-            to={ROUTE_PATHS.APP}
-            end
-            className={({ isActive }) =>
-              isActive
-                ? 'sidebar-link sidebar-link-active'
-                : 'sidebar-link'
-            }
-          >
-            Overview
-          </NavLink>
-        </nav>
-
-        <p className="sidebar-note">
-          Workspace navigation will become available after workspace management is implemented.
-        </p>
-      </aside>
-
-      <main id="app-content" className="app-content">
-        <Outlet />
+      <main id="app-content" tabIndex={-1} className="min-w-0 flex-1 bg-background">
+        <div className="mx-auto w-full max-w-[1600px] p-4 sm:p-6 lg:p-8">
+          <Outlet />
+        </div>
       </main>
     </div>
   </div>
-)
+);
