@@ -20,6 +20,7 @@
     "dev:api": "turbo run dev --filter=@excel-dashboard/api",
     "dev:ingestion": "turbo run dev --filter=@excel-dashboard/ingestion-worker",
     "dev:analytics": "turbo run dev --filter=@excel-dashboard/analytics-worker",
+    "preview:web": "turbo run preview --filter=@excel-dashboard/web",
     "build": "turbo run build",
     "build:affected": "turbo run build --affected",
     "lint": "npm run lint:root && turbo run lint",
