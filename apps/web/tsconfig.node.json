@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@excel-dashboard/typescript-config/node.json",
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.node.tsbuildinfo",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "types": [
+      "node"
+    ],
+  },
+  "include": [
+    "vite.config.ts"
+  ]
+}

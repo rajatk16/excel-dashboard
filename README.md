@@ -87,6 +87,7 @@ for subsequent infrastructure implementation.
 | npm run check         | Run all quality checks                    |
 | npm run clean         | Remove generated artifacts                |
 | npm run clean:all     | Remove artifacts and dependencies         |
+| npm run preview:web | Preview the frontend production build |
 
 Application development, build and test commands become
 operational as their corresponding applications are implemented.
@@ -109,6 +110,8 @@ docs/
 - [Local Development](docs/development/local-setup.md)
 - [Coding Standards](docs/development/coding-standards.md)
 - [Code Quality ADR](docs/adr/0002-code-quality-strategy.md)
+- [Frontend Architecture](docs/architecture/frontend.md)
+- [Frontend Architecture ADR](docs/adr/0003-frontend-architecture.md)
 
 ## Development Status
 
@@ -116,7 +119,7 @@ Phase 1: Engineering Foundation
 
 - [x] PR 1.1 - Monorepo Foundation
 - [x] PR 1.2 - ESLint and Prettier
-- [ ] PR 1.3 - React and Vite
+- [x] PR 1.3 - React and Vite
 - [ ] PR 1.4 - Tailwind and shadcn/ui
 - [ ] PR 1.5 - NestJS API
 - [ ] PR 1.6 - PostgreSQL and Prisma

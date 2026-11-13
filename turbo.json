@@ -12,7 +12,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$",".env*"],
       "outputs": ["dist/**", "build/**", "!.env*"],
       "env": ["VITE_*"]
     },
@@ -32,6 +32,13 @@
         "S3_*",
         "VITE_*"
       ]
+    },
+    "preview": {
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false,
+      "persistent": true
     },
     "lint": {
       "dependsOn": ["^build"],

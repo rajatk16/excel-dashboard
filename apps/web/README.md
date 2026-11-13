@@ -1,31 +1,83 @@
-# Web Application
+# Excel Dashboard Web
 
-The frontend application for the Excel Dashboard SaaS platform.
+React frontend for the Excel Dashboard SaaS platform.
 
 ## Technology
 
 - React
 - TypeScript
 - Vite
-- Tailwind CSS
-- shadcn/ui
 - React Router
-- TanStack Query
-- Zustand
+- Zod
 
-## Responsibilities
+## Development
 
-- Authentication and onboarding
-- Workspace management
-- Dataset management
-- Data exploration
-- Visual query builder
-- Visualization editor
-- Dashboard builder
-- Published dashboard viewer
+Run all commands from the repository root.
+
+### Install Dependencies
+
+```bash
+npm ci
+```
+
+### Configure Environment
+
+```bash
+cp apps/web/.env.example apps/web/.env.local
+```
+
+### Start Development Server
+
+```bash
+npm run dev:web
+```
+
+The application is available at:
+
+http://localhost:3000
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| npm run dev:web | Start frontend development |
+| npm run preview:web | Preview production build |
+| npm run build | Build applications |
+| npm run typecheck | Run TypeScript checks |
+| npm run lint | Run ESLint |
+| npm run format:check | Verify formatting |
+
+## Routes
+
+| Route | Description |
+| --- | --- |
+| / | Landing page |
+| /login | Login placeholder |
+| /register | Registration placeholder |
+| /app | Application overview |
+
+## Architecture
+
+The application uses feature-based organization, nested layouts, lazy route modules, validated environment configuration, and error boundaries.
+
+## Environment Variables
+
+| Variable | Description |
+| --- | --- |
+| VITE_APP_NAME | Application display name |
+| VITE_APP_ENV | Application environment |
+| VITE_API_BASE_URL | Backend API base URL |
+
+All VITE-prefixed variables are public.
+
+## Production Build
+
+The production bundle is generated under dist/.
+
+The hosting layer must support SPA route fallback.
 
 ## Implementation Status
 
-The application workspace is registered.
+The frontend application foundation is implemented.
 
-React and Vite will be initialized in Phase 1, PR 1.3.
+Authentication, workspace management, data ingestion, analytics, and dashboard functionality are not yet available.
