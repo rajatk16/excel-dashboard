@@ -1,6 +1,6 @@
-import { useEffect } from "react"
+import { useEffect } from 'react';
 
-import { getEnvironment } from "@/config/env"
+import { getEnvironment } from '@/config/env';
 
 export const usePageTitle = (title?: string): void => {
   useEffect(() => {
@@ -14,4 +14,4 @@ export const usePageTitle = (title?: string): void => {
       document.title = previousTitle;
     };
   }, [title]);
-}
+};

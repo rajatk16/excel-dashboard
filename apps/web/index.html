@@ -1,26 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
+      name="description"
+      content="Transform spreadsheets into interactive analytics dashboards."
     />
 
-    <meta name="description" content="Transform spreadsheets into interactive analytics dashboards." />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
-    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <title>Excel Dashboard</title>
+
+    <script>
+      (() => {
+        let preference = 'system';
+
+        try {
+          const stored = localStorage.getItem('excel-dashboard-theme');
+
+          if (stored === 'light' || stored === 'dark' || stored === 'system') {
+            preference = stored;
+          }
+        } catch {
+          // Fall back to the system preference.
+        }
+
+        const dark =
+          preference === 'dark' ||
+          (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        const root = document.documentElement;
+
+        root.classList.toggle('dark', dark);
+        root.style.colorScheme = dark ? 'dark' : 'light';
+        root.style.backgroundColor = dark ? '#09090b' : '#ffffff';
+      })();
+    </script>
   </head>
 
   <body>
-    <noscript>
-      Javascript is required to use Excel Dashboard.
-    </noscript>
+    <noscript> JavaScript is required to use Excel Dashboard. </noscript>
 
     <div id="root"></div>
 

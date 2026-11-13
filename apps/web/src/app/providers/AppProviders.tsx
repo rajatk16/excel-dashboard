@@ -1,9 +1,17 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren } from 'react';
 
-import { getEnvironment } from "@/config/env";
+import { Toaster } from '@excel-dashboard/ui/components/Toaster';
+import { ThemeProvider } from '@excel-dashboard/ui/theme/provider';
+
+import { getEnvironment } from '@/config/env';
 
 export const AppProviders = (props: PropsWithChildren) => {
   getEnvironment();
 
-  return props.children;
-}
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="excel-dashboard-theme">
+      {props.children}
+      <Toaster />
+    </ThemeProvider>
+  );
+};

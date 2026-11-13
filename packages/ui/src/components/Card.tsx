@@ -1,0 +1,46 @@
+import type { ComponentProps } from 'react';
+
+import { cn } from '../lib/utils';
+
+export const Card = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div
+    data-slot="card"
+    className={cn(
+      'flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-xs',
+      className,
+    )}
+    {...props}
+  />
+);
+
+export const CardHeader = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div data-slot="card-header" className={cn('flex flex-col gap-2 px-6', className)} {...props} />
+);
+
+export const CardTitle = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div
+    data-slot="card-title"
+    className={cn('leading-none font-semibold tracking-tight', className)}
+    {...props}
+  />
+);
+
+export const CardDescription = ({ className, ...props }: ComponentProps<'p'>) => (
+  <p
+    data-slot="card-description"
+    className={cn('text-sm leading-relaxed text-muted-foreground', className)}
+    {...props}
+  />
+);
+
+export const CardContent = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div data-slot="card-content" className={cn('px-6', className)} {...props} />
+);
+
+export const CardFooter = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div
+    data-slot="card-footer"
+    className={cn('flex items-center gap-2 px-6', className)}
+    {...props}
+  />
+);
