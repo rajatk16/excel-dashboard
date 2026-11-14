@@ -1,0 +1,20 @@
+{
+  "extends": "@excel-dashboard/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./.cache/typecheck.tsbuildinfo",
+    "types": ["node", "jest"],
+    "noEmit": true,
+    "verbatimModuleSyntax": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}

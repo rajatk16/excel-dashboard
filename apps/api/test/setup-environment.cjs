@@ -1,0 +1,16 @@
+process.env.NODE_ENV = 'test';
+process.env.APP_NAME = 'excel-dashboard-api';
+process.env.APP_VERSION = '0.0.0';
+process.env.API_HOST = '127.0.0.1';
+process.env.API_PORT = '4000';
+process.env.LOG_LEVEL = 'silent';
+process.env.CORS_ORIGINS = 'http://localhost:3000';
+process.env.CORS_CREDENTIALS = 'false';
+process.env.TRUST_PROXY_HOPS = '0';
+process.env.JSON_BODY_LIMIT_BYTES = '1048576';
+process.env.FORM_BODY_LIMIT_BYTES = '32768';
+process.env.FORM_PARAMETER_LIMIT = '100';
+process.env.HTTP_REQUEST_TIMEOUT_MS = '30000';
+process.env.HTTP_HEADERS_TIMEOUT_MS = '15000';
+process.env.HTTP_KEEP_ALIVE_TIMEOUT_MS = '5000';
+process.env.SHUTDOWN_TIMEOUT_MS = '15000';
