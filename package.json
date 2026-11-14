@@ -34,11 +34,16 @@
     "test": "turbo run test",
     "test:affected": "turbo run test --affected",
     "test:coverage": "turbo run test:coverage",
-    "check": "npm run format:check && npm run lint && turbo run typecheck test build",
+    "check": "npm run format:check && npm run lint && turbo run typecheck test build && npm run test:e2e",
     "clean": "node scripts/clean.mjs",
     "clean:all": "node scripts/clean.mjs --all",
     "doctor": "node scripts/check-environment.mjs",
-    "graph": "turbo run build --graph=dependency-graph.html"
+    "graph": "turbo run build --graph=dependency-graph.html",
+    "build:api": "turbo run build --filter=@excel-dashboard/api",
+    "start:api": "npm run start:prod --workspace=@excel-dashboard/api",
+    "test:api": "turbo run test --filter=@excel-dashboard/api",
+    "test:api:e2e": "turbo run test:e2e --filter=@excel-dashboard/api",
+    "test:e2e": "turbo run test:e2e"
   },
   "devDependencies": {
     "@excel-dashboard/eslint-config": "0.0.0",

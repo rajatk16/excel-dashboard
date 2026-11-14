@@ -123,8 +123,8 @@ Phase 1: Engineering Foundation
 - [x] PR 1.1 - Monorepo Foundation
 - [x] PR 1.2 - ESLint and Prettier
 - [x] PR 1.3 - React and Vite
-- [ ] PR 1.4 - Tailwind and shadcn/ui
-- [ ] PR 1.5 - NestJS API
+- [x] PR 1.4 - Tailwind and shadcn/ui
+- [x] PR 1.5 - NestJS API
 - [ ] PR 1.6 - PostgreSQL and Prisma
 - [ ] PR 1.7 - Redis and BullMQ
 - [ ] PR 1.8 - Object Storage

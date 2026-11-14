@@ -8,13 +8,24 @@
     "tsconfig.json",
     "packages/typescript-config/*.json"
   ],
-  "globalEnv": ["NODE_ENV"],
+  "globalEnv": [
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", "build/**", "!.env*"],
-      "env": ["VITE_*"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        "!.env*"
+      ],
+      "env": [
+        "VITE_*"
+      ]
     },
     "dev": {
       "dependsOn": ["^build"],
@@ -23,7 +34,16 @@
       "passThroughEnv": [
         "PORT",
         "HOST",
+        "WEB_PORT",
+        "API_*",
+        "APP_*",
         "LOG_LEVEL",
+        "CORS_*",
+        "TRUST_PROXY_HOPS",
+        "JSON_BODY_LIMIT_BYTES",
+        "FORM_*",
+        "HTTP_*",
+        "SHUTDOWN_TIMEOUT_MS",
         "DATABASE_URL",
         "REDIS_URL",
         "FIREBASE_*",
@@ -32,11 +52,6 @@
         "S3_*",
         "VITE_*"
       ]
-    },
-    "preview": {
-      "dependsOn": ["build"],
-      "cache": false,
-      "persistent": true
     },
     "lint": {
       "dependsOn": ["^build"],
@@ -57,12 +72,21 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "outputs": [],
-      "inputs": ["$TURBO_DEFAULT$", ".env.test*"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.test*"
+      ],
+      "outputs": []
     },
     "test:coverage": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**"
+      ]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "cache": false
     }
   }
 }
