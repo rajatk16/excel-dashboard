@@ -141,3 +141,6 @@ pnpm-lock.yaml
 yarn.lock
 bun.lock
 bun.lockb
+
+# Generated Prisma client
+/packages/database/src/generated/

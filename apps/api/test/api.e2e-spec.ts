@@ -21,6 +21,8 @@ import { AppModule } from '../src/app.module';
 import { configureApplication } from '../src/bootstrap/configureApplication';
 import { RequestId } from '../src/common/decorators/requestId.decorator';
 import { ApplicationException } from '../src/common/exception/application.exception';
+import { DatabaseHealthService } from '../src/database/services/databaseHealth.service';
+import { PrismaService } from '../src/database/services/prisma.service';
 import { HealthService } from '../src/health/services/health.service';
 
 class TestCreateDto {
@@ -83,7 +85,19 @@ describe('API foundation (e2e)', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
       controllers: [TestController],
-    }).compile();
+    })
+      .overrideProvider(PrismaService)
+      .useValue({
+      client: {},
+    })
+    .overrideProvider(DatabaseHealthService)
+    .useValue({
+      check: jest.fn().mockResolvedValue({
+        status: 'up',
+        latencyMs: 1,
+      }),
+    })
+    .compile();
 
     app =
       moduleRef.createNestApplication<NestExpressApplication>({
@@ -139,6 +153,9 @@ describe('API foundation (e2e)', () => {
         .expect(200)
         .expect({
           status: 'ready',
+          dependencies: {
+            database: 'up',
+          },
         });
     });
 

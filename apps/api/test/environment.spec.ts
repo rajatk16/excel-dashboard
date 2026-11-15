@@ -1,4 +1,15 @@
-import { validateEnvironment } from "../src/config/schemas/environment.schema";
+import { validateEnvironment as validateApiEnvironment } from "../src/config/schemas/environment.schema";
+
+const TEST_DATABASE_URL = 'postgresql://test:test@localhost:5432/test';
+
+function validateEnvironment(
+  configuration: Record<string, unknown>,
+) {
+  return validateApiEnvironment({
+    DATABASE_URL: TEST_DATABASE_URL,
+    ...configuration,
+  });
+}
 
 describe('Environment validation', () => {
   it('applies safe development defaults', () => {

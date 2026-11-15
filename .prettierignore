@@ -75,3 +75,6 @@ package-lock.json
 **/*.webp
 **/*.woff
 **/*.woff2
+
+/packages/database/src/generated/
+/packages/database/prisma/migrations/

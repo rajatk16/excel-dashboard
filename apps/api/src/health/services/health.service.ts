@@ -1,6 +1,13 @@
-import { type BeforeApplicationShutdown, Injectable, type OnModuleInit } from "@nestjs/common";
+import {
+  BeforeApplicationShutdown,
+  Injectable,
+  OnApplicationBootstrap,
+} from '@nestjs/common';
 
-import type { AppConfigService } from "../../config/services/appConfig.service";
+import {
+  AppConfigService,
+} from '../../config/services/appConfig.service';
+import type { DatabaseHealthService } from '../../database/services/databaseHealth.service';
 
 export interface HealthStatus {
   status: 'ok';
@@ -16,21 +23,32 @@ export interface LivenessStatus {
 
 export interface ReadinessStatus {
   status: 'ready' | 'not_ready';
+
+  dependencies: {
+    database: 'up' | 'down' | 'not_checked';
+  };
 }
 
 @Injectable()
-export class HealthService implements OnModuleInit, BeforeApplicationShutdown {
+export class HealthService
+  implements
+    OnApplicationBootstrap,
+    BeforeApplicationShutdown
+{
   private ready = false;
 
   constructor(
     private readonly config: AppConfigService,
+
+    private readonly databaseHealthService:
+      DatabaseHealthService,
   ) {}
 
-  onModuleInit() {
+  onApplicationBootstrap(): void {
     this.ready = true;
   }
 
-  beforeApplicationShutdown() {
+  beforeApplicationShutdown(): void {
     this.markNotReady();
   }
 
@@ -44,19 +62,41 @@ export class HealthService implements OnModuleInit, BeforeApplicationShutdown {
       service: this.config.applicationName,
       version: this.config.applicationVersion,
       timestamp: new Date().toISOString(),
-      uptimeSeconds: Math.floor(process.uptime()),
-    }
+      uptimeSeconds: Math.floor(
+        process.uptime(),
+      ),
+    };
   }
 
   getLiveness(): LivenessStatus {
     return {
-      status: 'ok'
-    }
+      status: 'ok',
+    };
   }
 
-  getReadiness(): ReadinessStatus {
-    return {
-      status: this.ready ? 'ready': 'not_ready'
+  async getReadiness():
+    Promise<ReadinessStatus> {
+    if (!this.ready) {
+      return {
+        status: 'not_ready',
+        dependencies: {
+          database: 'not_checked',
+        },
+      };
     }
+
+    const database =
+      await this.databaseHealthService.check();
+
+    return {
+      status:
+        this.ready && database.status === 'up'
+          ? 'ready'
+          : 'not_ready',
+
+      dependencies: {
+        database: database.status,
+      },
+    };
   }
 }
