@@ -50,7 +50,16 @@
         "GOOGLE_APPLICATION_CREDENTIALS",
         "AWS_*",
         "S3_*",
-        "VITE_*"
+        "VITE_*",
+        "DATABASE_*",
+        "API_HOST",
+        "API_PORT",
+        "CORS_*",
+        "TRUST_PROXY_HOPS",
+        "HTTP_*",
+        "SHUTDOWN_TIMEOUT_MS",
+        "APP_NAME",
+        "APP_VERSION"
       ]
     },
     "lint": {
@@ -87,6 +96,32 @@
     "test:e2e": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "generate": {
+      "cache": false
+    },
+    "test:integration": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "passThroughEnv": [
+        "DOCKER_HOST",
+        "DOCKER_TLS_VERIFY",
+        "DOCKER_CERT_PATH",
+        "TESTCONTAINERS_*"
+      ]
+    },
+    "@excel-dashboard/database#build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "prisma/**",
+        "prisma.config.ts",
+        "$TURBO_ROOT$/packages/typescript-config/**"
+      ],
+      "outputs": [
+        "dist/**",
+        "src/generated/prisma/**"
+      ]
     }
   }
 }

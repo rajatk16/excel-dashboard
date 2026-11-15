@@ -1,0 +1,24 @@
+{
+  "extends": "@excel-dashboard/typescript-config/node.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "types": [
+      "node", "jest"
+    ],
+    "noEmit": true,
+    "verbatimModuleSyntax": false,
+    "tsBuildInfoFile": "./.cache/typecheck.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*.ts",
+    "prisma/**/*.ts",
+    "test/**/*.ts",
+    "prisma.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}

@@ -4,6 +4,7 @@ import { type ArgumentsHost, Catch, type ExceptionFilter,HttpException,HttpStatu
 import type { Response } from "express";
 
 import { REQUEST_ID_HEADER } from "../constants/http.constant";
+import { mapDatabaseException } from "../errors/databaseException.mapper";
 import { ERROR_CODES } from "../errors/errorCodes";
 import { ApplicationException } from "../exception/application.exception";
 import type { RequestContextService } from "../services/requestContext.service";
@@ -144,6 +145,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       }
       return this.fromStatus(statusCode);
     }
+
+    const databaseException = mapDatabaseException(exception);
+
+    if (databaseException) return databaseException;
 
     const parserError = this.normalizeParserError(exception);
 
