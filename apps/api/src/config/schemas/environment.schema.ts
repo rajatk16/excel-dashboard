@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { databaseEnvironmentSchema } from '@excel-dashboard/database';
+import { queueEnvironmentSchema } from '@excel-dashboard/queue';
 
 const booleanFromString = z
   .enum(['true', 'false'])
@@ -43,6 +44,7 @@ const corsOriginsSchema = z
 export const environmentSchema = z
   .object({
     ...databaseEnvironmentSchema.shape,
+    ...queueEnvironmentSchema.shape,
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),

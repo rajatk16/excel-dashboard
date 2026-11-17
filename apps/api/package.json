@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@excel-dashboard/eslint-config": "0.0.0",
+    "@excel-dashboard/queue": "0.0.0",
     "@excel-dashboard/typescript-config": "0.0.0",
     "@nestjs/cli": "11.0.24",
     "@nestjs/schematics": "11.1.0",

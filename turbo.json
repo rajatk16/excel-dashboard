@@ -59,7 +59,12 @@
         "HTTP_*",
         "SHUTDOWN_TIMEOUT_MS",
         "APP_NAME",
-        "APP_VERSION"
+        "APP_VERSION",
+        "REDIS_*",
+        "QUEUE_*",
+        "WORKER_*",
+        "INGESTION_WORKER_*",
+        "ANALYTICS_WORKER_*"
       ]
     },
     "lint": {
@@ -79,36 +84,8 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
-    "test": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env.test*"
-      ],
-      "outputs": []
-    },
-    "test:coverage": {
-      "dependsOn": ["^build"],
-      "outputs": [
-        "coverage/**"
-      ]
-    },
-    "test:e2e": {
-      "dependsOn": ["^build"],
-      "cache": false
-    },
     "generate": {
       "cache": false
-    },
-    "test:integration": {
-      "dependsOn": ["^build"],
-      "cache": false,
-      "passThroughEnv": [
-        "DOCKER_HOST",
-        "DOCKER_TLS_VERIFY",
-        "DOCKER_CERT_PATH",
-        "TESTCONTAINERS_*"
-      ]
     },
     "@excel-dashboard/database#build": {
       "dependsOn": ["^build"],
