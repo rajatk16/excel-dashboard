@@ -1,0 +1,36 @@
+name: excel-dashboard-redis
+
+services:
+  redis:
+    image: redis:7.4-alpine
+
+    restart: unless-stopped
+
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+      - --requirepass
+      - local-development-only
+
+    ports:
+      - '127.0.0.1:6379:6379'
+
+    volumes:
+      - redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'REDISCLI_AUTH=local-development-only redis-cli ping | grep -q PONG',
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+    stop_grace_period: 30s
+
+volumes:
+  redis-data:

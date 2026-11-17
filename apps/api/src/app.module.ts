@@ -6,12 +6,14 @@ import { RequestContextModule } from "./common/modules/requestContext.module";
 import { AppConfigModule } from "./config/modules/appConfig.module";
 import { DatabaseModule } from "./database/modules/database.module";
 import { HealthModule } from "./health/modules/health.module";
+import { QueueModule } from "./queue/modules/queue.module";
 
 @Module({
   imports: [
     AppConfigModule,
     RequestContextModule,
     DatabaseModule,
+    QueueModule,
     HealthModule
   ],
   providers: [

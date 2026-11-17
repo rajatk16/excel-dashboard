@@ -4,16 +4,19 @@ import {
   OnApplicationBootstrap,
 } from '@nestjs/common';
 
-import {
-  AppConfigService,
-} from '../../config/services/appConfig.service';
+import type { AppConfigService } from '../../config/services/appConfig.service';
 import type { DatabaseHealthService } from '../../database/services/databaseHealth.service';
+import type { QueueHealthService } from '../../queue/services/queueHealth.service';
 
 export interface HealthStatus {
   status: 'ok';
+
   service: string;
+
   version: string;
+
   timestamp: string;
+
   uptimeSeconds: number;
 }
 
@@ -26,6 +29,8 @@ export interface ReadinessStatus {
 
   dependencies: {
     database: 'up' | 'down' | 'not_checked';
+
+    redis: 'up' | 'down' | 'not_checked';
   };
 }
 
@@ -42,6 +47,9 @@ export class HealthService
 
     private readonly databaseHealthService:
       DatabaseHealthService,
+
+    private readonly queueHealthService:
+      QueueHealthService,
   ) {}
 
   onApplicationBootstrap(): void {
@@ -59,12 +67,14 @@ export class HealthService
   getHealth(): HealthStatus {
     return {
       status: 'ok',
+
       service: this.config.applicationName,
+
       version: this.config.applicationVersion,
+
       timestamp: new Date().toISOString(),
-      uptimeSeconds: Math.floor(
-        process.uptime(),
-      ),
+
+      uptimeSeconds: Math.floor(process.uptime()),
     };
   }
 
@@ -74,28 +84,37 @@ export class HealthService
     };
   }
 
-  async getReadiness():
-    Promise<ReadinessStatus> {
+  async getReadiness(): Promise<ReadinessStatus> {
     if (!this.ready) {
       return {
         status: 'not_ready',
+
         dependencies: {
           database: 'not_checked',
+
+          redis: 'not_checked',
         },
       };
     }
 
-    const database =
-      await this.databaseHealthService.check();
+    const [database, redis] = await Promise.all([
+      this.databaseHealthService.check(),
+
+      this.queueHealthService.check(),
+    ]);
 
     return {
       status:
-        this.ready && database.status === 'up'
+        this.ready &&
+        database.status === 'up' &&
+        redis.status === 'up'
           ? 'ready'
           : 'not_ready',
 
       dependencies: {
         database: database.status,
+
+        redis: redis.status,
       },
     };
   }

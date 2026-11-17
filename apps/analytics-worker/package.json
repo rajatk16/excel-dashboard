@@ -2,16 +2,27 @@
   "name": "@excel-dashboard/analytics-worker",
   "version": "0.0.0",
   "private": true,
-  "description": "Background worker for analytical query execution.",
+  "description": "Analytical query worker for Excel Dashboard",
   "type": "commonjs",
+  "main": "./dist/main.js",
   "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node --enable-source-maps dist/main.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix --max-warnings=0"
   },
   "devDependencies": {
     "@excel-dashboard/eslint-config": "0.0.0",
     "@excel-dashboard/typescript-config": "0.0.0",
+    "@types/node": "26.6.6",
     "eslint": "9.39.1",
+    "tsx": "4.23.15",
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "@excel-dashboard/queue": "0.0.0",
+    "dotenv": "18.0.10"
   }
 }

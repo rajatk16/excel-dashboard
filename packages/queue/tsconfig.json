@@ -1,0 +1,21 @@
+{
+  "extends": "@excel-dashboard/typescript-config/node.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "types": ["node", "jest"],
+    "noEmit": true,
+    "verbatimModuleSyntax": false,
+    "tsBuildInfoFile": "./.cache/typecheck.tsbuildInfo"
+  },
+  "include": [
+    "src/**/*.ts",
+    "scripts/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}
