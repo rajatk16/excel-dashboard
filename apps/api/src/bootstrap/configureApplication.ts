@@ -1,21 +1,19 @@
-import { RequestMethod, VersioningType } from "@nestjs/common";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { RequestMethod, VersioningType } from '@nestjs/common';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 
-import { API_PREFIX, DEFAULT_API_VERSION } from "../common/constants/http.constant";
-import { GlobalExceptionFilter } from "../common/filters/globalException.filter";
-import { ResponseInterceptor } from "../common/interceptors/response.interceptor";
-import { RequestContextMiddleware } from "../common/middlewares/requestContext.middleware";
-import { createGlobalValidationPipe } from "../common/pipes/validation.pipe";
+import { API_PREFIX, DEFAULT_API_VERSION } from '../common/constants/http.constant';
+import { GlobalExceptionFilter } from '../common/filters/globalException.filter';
+import { ResponseInterceptor } from '../common/interceptors/response.interceptor';
+import { RequestContextMiddleware } from '../common/middlewares/requestContext.middleware';
+import { createGlobalValidationPipe } from '../common/pipes/validation.pipe';
 
-import { configureBodyParser } from "./configureBodyParser";
-import { configureSecurity } from "./configureSecurity";
+import { configureBodyParser } from './configureBodyParser';
+import { configureSecurity } from './configureSecurity';
 
 export const configureApplication = (app: NestExpressApplication): void => {
   const requestContextMiddleware = app.get(RequestContextMiddleware);
 
-  app.use(
-    requestContextMiddleware.use.bind(requestContextMiddleware)
-  );
+  app.use(requestContextMiddleware.use.bind(requestContextMiddleware));
 
   configureSecurity(app);
 
@@ -25,28 +23,25 @@ export const configureApplication = (app: NestExpressApplication): void => {
     exclude: [
       {
         path: 'health/live',
-        method: RequestMethod.GET
+        method: RequestMethod.GET,
       },
       {
         path: 'health/ready',
-        method: RequestMethod.GET
-      }
-    ]
+        method: RequestMethod.GET,
+      },
+    ],
   });
 
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: DEFAULT_API_VERSION
+    defaultVersion: DEFAULT_API_VERSION,
   });
-
 
   app.useGlobalPipes(createGlobalValidationPipe());
 
-  app.useGlobalFilters(
-    app.get(GlobalExceptionFilter)
-  );
+  app.useGlobalFilters(app.get(GlobalExceptionFilter));
 
-  app.useGlobalInterceptors(
-    app.get(ResponseInterceptor)
-  )
-}
+  app.useGlobalInterceptors(app.get(ResponseInterceptor));
+
+  app.enableShutdownHooks();
+};

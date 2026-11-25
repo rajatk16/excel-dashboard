@@ -6,9 +6,7 @@ module.exports = {
 
   rootDir: '.',
 
-  testMatch: [
-    '<rootDir>/test/**/*.e2e-spec.ts',
-  ],
+  testMatch: ['<rootDir>/test/**/*.e2e-spec.ts'],
 
   collectCoverage: false,
 

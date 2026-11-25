@@ -2,11 +2,7 @@ import Redis from 'ioredis';
 
 import type { QueueEnvironment } from '../config/queueEnvironment';
 
-export type RedisConnectionRole =
-  | 'producer'
-  | 'worker'
-  | 'events'
-  | 'health';
+export type RedisConnectionRole = 'producer' | 'worker' | 'events' | 'health';
 
 export interface RedisConnectionOptions {
   environment: QueueEnvironment;
@@ -18,13 +14,10 @@ export interface RedisConnectionOptions {
   onError?: (error: Error) => void;
 }
 
-export const createRedisConnection = (
-  options: RedisConnectionOptions,
-): Redis => {
+export const createRedisConnection = (options: RedisConnectionOptions): Redis => {
   const { environment, role, connectionName } = options;
 
-  const blockingConnection =
-    role === 'worker' || role === 'events';
+  const blockingConnection = role === 'worker' || role === 'events';
 
   const connection = new Redis(environment.REDIS_URL, {
     connectionName,
@@ -57,11 +50,9 @@ export const createRedisConnection = (
   });
 
   return connection;
-}
+};
 
-export const connectRedis = async (
-  connection: Redis,
-): Promise<void> => {
+export const connectRedis = async (connection: Redis): Promise<void> => {
   if (connection.status === 'wait') {
     await connection.connect();
   }
@@ -71,11 +62,9 @@ export const connectRedis = async (
   }
 
   await connection.ping();
-}
+};
 
-export async function closeRedis(
-  connection: Redis,
-): Promise<void> {
+export async function closeRedis(connection: Redis): Promise<void> {
   if (connection.status === 'end') {
     return;
   }

@@ -6,19 +6,19 @@ export default [
     typeAware: true,
   }),
   {
-    files: ["test/**/*.ts","src/**/*.spec.ts"],
+    files: ['test/**/*.ts', 'src/**/*.spec.ts'],
     languageOptions: {
       globals: {
-        describe: "readonly",
-        it: "readonly",
+        describe: 'readonly',
+        it: 'readonly',
         test: 'readonly',
         expect: 'readonly',
         jest: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
         beforeEach: 'readonly',
-        afterEach: 'readonly'
-      }
-    }
-  }
+        afterEach: 'readonly',
+      },
+    },
+  },
 ];

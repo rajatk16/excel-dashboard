@@ -1,0 +1,29 @@
+{
+  "identities": [
+    {
+      "name": "local-administrator",
+      "credentials": [
+        {
+          "accessKey": "local-admin-access-key",
+          "secretKey": "local-admin-secret-key"
+        }
+      ],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    },
+    {
+      "name": "excel-dashboard",
+      "credentials": [
+        {
+          "accessKey": "local-access-key",
+          "secretKey": "local-secret-key"
+        }
+      ],
+      "actions": [
+        "Read:excel-dashboard-local",
+        "Write:excel-dashboard-local",
+        "List:excel-dashboard-local",
+        "Tagging:excel-dashboard-local"
+      ]
+    }
+  ]
+}

@@ -21,7 +21,6 @@ export const ERROR_CODES = {
   GATEWAY_TIMEOUT: 'GATEWAY_TIMEOUT',
 
   HTTP_ERROR: 'HTTP_ERROR',
-}
+};
 
-export type ErrorCode =
-  (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
+export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];

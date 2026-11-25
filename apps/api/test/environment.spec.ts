@@ -1,10 +1,8 @@
-import { validateEnvironment as validateApiEnvironment } from "../src/config/schemas/environment.schema";
+import { validateEnvironment as validateApiEnvironment } from '../src/config/schemas/environment.schema';
 
 const TEST_DATABASE_URL = 'postgresql://test:test@localhost:5432/test';
 
-function validateEnvironment(
-  configuration: Record<string, unknown>,
-) {
+function validateEnvironment(configuration: Record<string, unknown>) {
   return validateApiEnvironment({
     DATABASE_URL: TEST_DATABASE_URL,
     ...configuration,
@@ -19,9 +17,7 @@ describe('Environment validation', () => {
     expect(environment.API_PORT).toBe(4000);
     expect(environment.CORS_CREDENTIALS).toBe(false);
 
-    expect(environment.CORS_ORIGINS).toEqual([
-      'http://localhost:3000',
-    ]);
+    expect(environment.CORS_ORIGINS).toEqual(['http://localhost:3000']);
   });
 
   it('converts string ports into numbers', () => {
@@ -34,25 +30,18 @@ describe('Environment validation', () => {
 
   it('parses multiple CORS origins', () => {
     const environment = validateEnvironment({
-      CORS_ORIGINS:
-        'http://localhost:3000, https://app.example.com',
+      CORS_ORIGINS: 'http://localhost:3000, https://app.example.com',
     });
 
-    expect(environment.CORS_ORIGINS).toEqual([
-      'http://localhost:3000',
-      'https://app.example.com',
-    ]);
+    expect(environment.CORS_ORIGINS).toEqual(['http://localhost:3000', 'https://app.example.com']);
   });
 
   it('deduplicates CORS origins', () => {
     const environment = validateEnvironment({
-      CORS_ORIGINS:
-        'http://localhost:3000,http://localhost:3000',
+      CORS_ORIGINS: 'http://localhost:3000,http://localhost:3000',
     });
 
-    expect(environment.CORS_ORIGINS).toEqual([
-      'http://localhost:3000',
-    ]);
+    expect(environment.CORS_ORIGINS).toEqual(['http://localhost:3000']);
   });
 
   it('parses false without truthiness coercion', () => {
@@ -79,13 +68,7 @@ describe('Environment validation', () => {
     ).toThrow('CORS_CREDENTIALS');
   });
 
-  it.each([
-    '0',
-    '-1',
-    '65536',
-    'abc',
-    '1.5',
-  ])('rejects invalid API port %s', (port) => {
+  it.each(['0', '-1', '65536', 'abc', '1.5'])('rejects invalid API port %s', (port) => {
     expect(() =>
       validateEnvironment({
         API_PORT: port,

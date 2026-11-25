@@ -1,11 +1,17 @@
-import { type Job, UnrecoverableError, Worker } from "bullmq";
-import type Redis from "ioredis";
+import { type Job, UnrecoverableError, Worker } from 'bullmq';
+import type Redis from 'ioredis';
 
-import type { WorkerEnvironment } from "../config/workerEnvironment";
-import { closeRedis, createRedisConnection } from "../connections/redisConnection";
-import { ACTIVE_JOB_QUEUE_MAP, type ActiveJobName, parseJobPayload, type ProbeJobPayload, type ProbeJobResult } from "../contracts/jobContract";
-import type { ActiveQueueName } from "../contracts/queueName";
-import { PermanentJobError } from "../errors/queueError";
+import type { WorkerEnvironment } from '../config/workerEnvironment';
+import { closeRedis, createRedisConnection } from '../connections/redisConnection';
+import {
+  ACTIVE_JOB_QUEUE_MAP,
+  type ActiveJobName,
+  parseJobPayload,
+  type ProbeJobPayload,
+  type ProbeJobResult,
+} from '../contracts/jobContract';
+import type { ActiveQueueName } from '../contracts/queueName';
+import { PermanentJobError } from '../errors/queueError';
 
 export interface JobExecutionContext {
   jobId: string;
@@ -16,7 +22,7 @@ export interface JobExecutionContext {
 
 export type ProbeJobProcessor = (
   payload: ProbeJobPayload,
-  context: JobExecutionContext
+  context: JobExecutionContext,
 ) => Promise<ProbeJobResult>;
 
 export interface QueueConsumerOptions {
@@ -26,10 +32,7 @@ export interface QueueConsumerOptions {
   processor: ProbeJobProcessor;
   onError?: (error: Error) => void;
   onCompleted?: (jobId: string) => void;
-  onFailed?: (
-    jobId: string | undefined,
-    attemptsMade: number
-   ) => void;
+  onFailed?: (jobId: string | undefined, attemptsMade: number) => void;
   onStalled?: (jobId: string) => void;
 }
 
@@ -41,12 +44,8 @@ export class QueueConsumer {
   private runPromise: Promise<void> | undefined;
   private closePromise: Promise<void> | undefined;
 
-  constructor(
-    private readonly options: QueueConsumerOptions
-  ) {
-    if (
-      ACTIVE_JOB_QUEUE_MAP[options.jobName] !== options.queueName
-    ) {
+  constructor(private readonly options: QueueConsumerOptions) {
+    if (ACTIVE_JOB_QUEUE_MAP[options.jobName] !== options.queueName) {
       throw new Error('Invalid worker queue and job configuration.');
     }
 
@@ -58,18 +57,22 @@ export class QueueConsumer {
       connectionName: `${environment.WORKER_NAME}-consumer`,
       onError: (error) => {
         options.onError?.(error);
-      }
+      },
     });
 
-    this.worker = new Worker<ProbeJobPayload, ProbeJobResult, ActiveJobName>(options.queueName, (job) => this.process(job), {
-      connection: this.connection,
-      prefix: environment.QUEUE_PREFIX,
-      autorun: false,
-      concurrency: environment.WORKER_CONCURRENCY,
-      lockDuration: environment.WORKER_LOCK_DURATION_MS,
-      stalledInterval: environment.WORKER_STALLED_INTERVAL_MS,
-      maxStalledCount: environment.WORKER_MAX_STALLED_COUNT
-    });
+    this.worker = new Worker<ProbeJobPayload, ProbeJobResult, ActiveJobName>(
+      options.queueName,
+      (job) => this.process(job),
+      {
+        connection: this.connection,
+        prefix: environment.QUEUE_PREFIX,
+        autorun: false,
+        concurrency: environment.WORKER_CONCURRENCY,
+        lockDuration: environment.WORKER_LOCK_DURATION_MS,
+        stalledInterval: environment.WORKER_STALLED_INTERVAL_MS,
+        maxStalledCount: environment.WORKER_MAX_STALLED_COUNT,
+      },
+    );
 
     this.worker.on('error', (error: Error) => {
       options.onError?.(error);
@@ -80,10 +83,7 @@ export class QueueConsumer {
     });
 
     this.worker.on('failed', (job) => {
-      options.onFailed?.(
-        job?.id,
-        job?.attemptsMade ?? 0,
-      )
+      options.onFailed?.(job?.id, job?.attemptsMade ?? 0);
     });
 
     this.worker.on('stalled', (jobId) => {
@@ -98,29 +98,30 @@ export class QueueConsumer {
 
     await this.worker.waitUntilReady();
 
-    if(this.closing) {
+    if (this.closing) {
       throw new Error('Worker is shutting down.');
     }
 
     this.running = true;
 
-    this.runPromise = this.worker.run().catch((error: unknown) => {
-      this.options.onError?.(error instanceof Error ? error : new Error('Worker execution failed'));
-    }).finally(() => {
-      this.running = false;
-    })
+    this.runPromise = this.worker
+      .run()
+      .catch((error: unknown) => {
+        this.options.onError?.(
+          error instanceof Error ? error : new Error('Worker execution failed'),
+        );
+      })
+      .finally(() => {
+        this.running = false;
+      });
   }
 
   isRunning(): boolean {
-    return (
-      this.running && !this.closing && this.worker.isRunning()
-    )
+    return this.running && !this.closing && this.worker.isRunning();
   }
 
   isReady(): boolean {
-    return (
-      this.isRunning() && this.connection.status === 'ready'
-    );
+    return this.isRunning() && this.connection.status === 'ready';
   }
 
   close(): Promise<void> {
@@ -171,11 +172,7 @@ export class QueueConsumer {
         workerName: this.options.environment.WORKER_NAME,
 
         updateProgress: async (progress) => {
-          if (
-            !Number.isFinite(progress) ||
-            progress < 0 ||
-            progress > 100
-          ) {
+          if (!Number.isFinite(progress) || progress < 0 || progress > 100) {
             throw new PermanentJobError('Invalid job progress.');
           }
 

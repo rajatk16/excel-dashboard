@@ -1,14 +1,10 @@
-import {
-  validateDatabaseEnvironment,
-} from '../src/config/databaseEnvironment';
+import { validateDatabaseEnvironment } from '../src/config/databaseEnvironment';
 
 describe('Database environment validation', () => {
   it('applies defaults for optional database settings', () => {
-    const environment =
-      validateDatabaseEnvironment({
-        DATABASE_URL:
-          'postgresql://dashboard:dashboard@localhost:5432/excel_dashboard',
-      });
+    const environment = validateDatabaseEnvironment({
+      DATABASE_URL: 'postgresql://dashboard:dashboard@localhost:5432/excel_dashboard',
+    });
 
     expect(environment).toMatchObject({
       DATABASE_POOL_MAX: 10,
@@ -24,13 +20,11 @@ describe('Database environment validation', () => {
   });
 
   it('coerces numeric environment values', () => {
-    const environment =
-      validateDatabaseEnvironment({
-        DATABASE_URL:
-          'postgres://dashboard:dashboard@localhost:5432/excel_dashboard',
-        DATABASE_POOL_MAX: '25',
-        DATABASE_HEALTH_TIMEOUT_MS: '1000',
-      });
+    const environment = validateDatabaseEnvironment({
+      DATABASE_URL: 'postgres://dashboard:dashboard@localhost:5432/excel_dashboard',
+      DATABASE_POOL_MAX: '25',
+      DATABASE_HEALTH_TIMEOUT_MS: '1000',
+    });
 
     expect(environment.DATABASE_POOL_MAX).toBe(25);
     expect(environment.DATABASE_HEALTH_TIMEOUT_MS).toBe(1000);
@@ -39,11 +33,8 @@ describe('Database environment validation', () => {
   it('rejects invalid database URLs', () => {
     expect(() =>
       validateDatabaseEnvironment({
-        DATABASE_URL:
-          'https://localhost:5432/excel_dashboard',
+        DATABASE_URL: 'https://localhost:5432/excel_dashboard',
       }),
-    ).toThrow(
-      'Invalid database configuration:',
-    );
+    ).toThrow('Invalid database configuration:');
   });
 });

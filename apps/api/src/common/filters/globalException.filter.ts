@@ -1,14 +1,22 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 
-import { type ArgumentsHost, Catch, type ExceptionFilter,HttpException,HttpStatus, Injectable, Logger } from "@nestjs/common";
-import type { Response } from "express";
+import {
+  type ArgumentsHost,
+  Catch,
+  type ExceptionFilter,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
+import type { Response } from 'express';
 
-import { REQUEST_ID_HEADER } from "../constants/http.constant";
-import { mapDatabaseException } from "../errors/databaseException.mapper";
-import { ERROR_CODES } from "../errors/errorCodes";
-import { ApplicationException } from "../exception/application.exception";
-import type { RequestContextService } from "../services/requestContext.service";
-import type { ApiErrorBody, ApiErrorResponse } from "../types/apiResponse.type";
+import { REQUEST_ID_HEADER } from '../constants/http.constant';
+import { mapDatabaseException } from '../errors/databaseException.mapper';
+import { ERROR_CODES } from '../errors/errorCodes';
+import { ApplicationException } from '../exception/application.exception';
+import type { RequestContextService } from '../services/requestContext.service';
+import type { ApiErrorBody, ApiErrorResponse } from '../types/apiResponse.type';
 
 interface NormalizedException {
   statusCode: number;
@@ -81,7 +89,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
   constructor(private readonly requestContextService: RequestContextService) {}
 
-  catch (exception: unknown, host: ArgumentsHost): void {
+  catch(exception: unknown, host: ArgumentsHost): void {
     const response = host.switchToHttp().getResponse<Response>();
 
     this.handle(exception, response);
@@ -90,13 +98,15 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   handle(exception: unknown, response: Response): void {
     const existingRequestId = response.getHeader(REQUEST_ID_HEADER);
 
-    const requestId = this.requestContextService.getRequestId() ?? (typeof existingRequestId === 'string' ? existingRequestId : randomUUID());
+    const requestId =
+      this.requestContextService.getRequestId() ??
+      (typeof existingRequestId === 'string' ? existingRequestId : randomUUID());
 
     const normalized = this.normalize(exception);
 
     if (normalized.statusCode >= 500) {
       this.logger.error(
-        `Request failed: requestId=${requestId}, status=${normalized.statusCode}, code=${normalized.error.code}`
+        `Request failed: requestId=${requestId}, status=${normalized.statusCode}, code=${normalized.error.code}`,
       );
     }
 
@@ -108,7 +118,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     response.setHeader(REQUEST_ID_HEADER, requestId);
-    response.setHeader("Cache-Control", 'no-store');
+    response.setHeader('Cache-Control', 'no-store');
 
     const body: ApiErrorResponse = {
       success: false,
@@ -116,8 +126,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       meta: {
         requestId,
         timestamp: new Date().toISOString(),
-      }
-    }
+      },
+    };
 
     response.status(normalized.statusCode).json(body);
   }
@@ -126,22 +136,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const statusCode = exception.getStatus();
 
-      if (
-        !Number.isInteger(statusCode) ||
-        statusCode < 400 || statusCode > 599
-      ) {
-        return this.fromStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+      if (!Number.isInteger(statusCode) || statusCode < 400 || statusCode > 599) {
+        return this.fromStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       }
 
-      if(exception instanceof ApplicationException && statusCode < 500) {
+      if (exception instanceof ApplicationException && statusCode < 500) {
         return {
           statusCode,
           error: {
             code: exception.code,
             message: exception.message,
-            ...(exception.details !== undefined ? {details: exception.details} : {})
-          }
-        }
+            ...(exception.details !== undefined ? { details: exception.details } : {}),
+          },
+        };
       }
       return this.fromStatus(statusCode);
     }
@@ -156,17 +163,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       return parserError;
     }
 
-    return this.fromStatus(
-      HttpStatus.INTERNAL_SERVER_ERROR
-    );
+    return this.fromStatus(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  private normalizeParserError(
-    exception:unknown
-  ): NormalizedException | undefined {
-    if (
-      typeof exception !== 'object' || exception === null || !('type' in exception)
-    ) {
+  private normalizeParserError(exception: unknown): NormalizedException | undefined {
+    if (typeof exception !== 'object' || exception === null || !('type' in exception)) {
       return undefined;
     }
 
@@ -176,18 +177,16 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           statusCode: HttpStatus.BAD_REQUEST,
           error: {
             code: ERROR_CODES.INVALID_JSON,
-            message: 'The request body could not be parsed.'
-          }
-        }
+            message: 'The request body could not be parsed.',
+          },
+        };
       case 'entity.too.large':
       case 'parameters.too.many':
         return this.fromStatus(HttpStatus.PAYLOAD_TOO_LARGE);
 
       case 'encoding.unsupported':
       case 'charset.unsupported':
-        return this.fromStatus(
-          HttpStatus.UNSUPPORTED_MEDIA_TYPE
-        );
+        return this.fromStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
       case 'request.aborted':
       case 'request.size.invalid':
         return this.fromStatus(HttpStatus.BAD_REQUEST);
@@ -199,12 +198,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private fromStatus(statusCode: number): NormalizedException {
     const error = HTTP_ERROR_DEFAULTS[statusCode] ?? {
       code: statusCode >= 500 ? ERROR_CODES.INTERNAL_SERVER_ERROR : ERROR_CODES.HTTP_ERROR,
-      message: statusCode >= 500 ? 'An unexpected error occurred.' : 'The request could not be completed.'
-    }
+      message:
+        statusCode >= 500 ? 'An unexpected error occurred.' : 'The request could not be completed.',
+    };
 
     return {
       statusCode,
-      error
-    }
+      error,
+    };
   }
 }

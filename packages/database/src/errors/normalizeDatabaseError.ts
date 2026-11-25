@@ -1,6 +1,6 @@
-import { Prisma } from "../generated/prisma/client";
+import { Prisma } from '../generated/prisma/client';
 
-import { DATABASE_ERROR_CODES, DatabaseError, type DatabaseErrorCode } from "./databaseError";
+import { DATABASE_ERROR_CODES, DatabaseError, type DatabaseErrorCode } from './databaseError';
 
 interface ErrorDefinition {
   code: DatabaseErrorCode;
@@ -72,12 +72,12 @@ const PRISMA_ERROR_MAP: Readonly<Record<string, ErrorDefinition>> = {
     message: 'A concurrent database transaction conflict occurred.',
     retryable: true,
   },
-}
+};
 
 const POSTGRES_ERROR_MAP: Readonly<Record<string, ErrorDefinition>> = {
   '23505': {
     code: DATABASE_ERROR_CODES.UNIQUE_CONSTRAINT,
-    message: 'A unique database constraint was violated.'
+    message: 'A unique database constraint was violated.',
   },
   '23503': {
     code: DATABASE_ERROR_CODES.FOREIGN_KEY_CONSTRAINT,
@@ -140,23 +140,16 @@ const POSTGRES_ERROR_MAP: Readonly<Record<string, ErrorDefinition>> = {
     message: 'Database connection failed.',
     retryable: true,
   },
-}
+};
 
-const createError = (
-  definition: ErrorDefinition,
-  cause: unknown,
-): DatabaseError => new DatabaseError({
-  ...definition,
-  cause
-})
+const createError = (definition: ErrorDefinition, cause: unknown): DatabaseError =>
+  new DatabaseError({
+    ...definition,
+    cause,
+  });
 
-const readyStringProperty = (
-  value: unknown,
-  property: string
-): string | undefined => {
-  if (
-    typeof value !== 'object' || value === null
-  ) {
+const readyStringProperty = (value: unknown, property: string): string | undefined => {
+  if (typeof value !== 'object' || value === null) {
     return undefined;
   }
 
@@ -165,41 +158,35 @@ const readyStringProperty = (
   const result = record[property];
 
   return typeof result === 'string' ? result : undefined;
-}
+};
 
-const readProperty = (
-  value: unknown,
-  property: string
-): unknown => {
-  if (
-    typeof value !== 'object' || value === null
-  ) {
+const readProperty = (value: unknown, property: string): unknown => {
+  if (typeof value !== 'object' || value === null) {
     return undefined;
   }
 
   const record = value as Record<string, unknown>;
 
   return record[property];
-}
+};
 
-const findPostgresError = (
-  error: unknown,
-  depth = 0
-): ErrorDefinition | undefined => {
+const findPostgresError = (error: unknown, depth = 0): ErrorDefinition | undefined => {
   if (depth > 5) return undefined;
 
   const code = readyStringProperty(error, 'code');
 
-  const originalCode = readyStringProperty(error,'originalCode');
+  const originalCode = readyStringProperty(error, 'originalCode');
 
-  const definition = (code ? POSTGRES_ERROR_MAP[code] : undefined) ?? (originalCode ? POSTGRES_ERROR_MAP[originalCode] : undefined);
+  const definition =
+    (code ? POSTGRES_ERROR_MAP[code] : undefined) ??
+    (originalCode ? POSTGRES_ERROR_MAP[originalCode] : undefined);
 
   if (definition) return definition;
 
   const nestedValues = [
     readProperty(error, 'cause'),
     readProperty(error, 'meta'),
-    readProperty(error, 'driverAdapterError')
+    readProperty(error, 'driverAdapterError'),
   ];
 
   for (const nested of nestedValues) {
@@ -215,11 +202,9 @@ const findPostgresError = (
   }
 
   return undefined;
-}
+};
 
-export const tryNormalizeDatabaseError = (
-  error: unknown
-): DatabaseError | undefined => {
+export const tryNormalizeDatabaseError = (error: unknown): DatabaseError | undefined => {
   if (error instanceof DatabaseError) return error;
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -236,35 +221,34 @@ export const tryNormalizeDatabaseError = (
     return new DatabaseError({
       code: DATABASE_ERROR_CODES.UNKNOWN,
       message: 'A database operation failed.',
-      cause: error
-    })
+      cause: error,
+    });
   }
 
-  if (
-    error instanceof Prisma.PrismaClientInitializationError
-  ) {
+  if (error instanceof Prisma.PrismaClientInitializationError) {
     const definition = error.errorCode ? PRISMA_ERROR_MAP[error.errorCode] : undefined;
 
     return createError(
       definition ?? {
         code: DATABASE_ERROR_CODES.CONNECTION_UNAVAILABLE,
-        message: 'Database initialization failed.'
+        message: 'Database initialization failed.',
       },
-      error
-    )
+      error,
+    );
   }
 
   if (
-    error instanceof Prisma.PrismaClientUnknownRequestError || error instanceof Prisma.PrismaClientValidationError
+    error instanceof Prisma.PrismaClientUnknownRequestError ||
+    error instanceof Prisma.PrismaClientValidationError
   ) {
     const definition = findPostgresError(error);
 
     return createError(
       definition ?? {
         code: DATABASE_ERROR_CODES.UNKNOWN,
-        message: 'A database operation failed.'
+        message: 'A database operation failed.',
       },
-      error
+      error,
     );
   }
 
@@ -281,8 +265,7 @@ export const tryNormalizeDatabaseError = (
     code === 'ENOTFOUND'
   ) {
     return new DatabaseError({
-      code:
-        DATABASE_ERROR_CODES.CONNECTION_UNAVAILABLE,
+      code: DATABASE_ERROR_CODES.CONNECTION_UNAVAILABLE,
       message: 'Database connection is unavailable.',
       retryable: true,
       cause: error,
@@ -290,14 +273,12 @@ export const tryNormalizeDatabaseError = (
   }
 
   return undefined;
-}
+};
 
-export const normalizeDatabaseError = (
-  error: unknown
-): DatabaseError => (
-  tryNormalizeDatabaseError(error) ?? new DatabaseError({
+export const normalizeDatabaseError = (error: unknown): DatabaseError =>
+  tryNormalizeDatabaseError(error) ??
+  new DatabaseError({
     code: DATABASE_ERROR_CODES.UNKNOWN,
     message: 'An unexpected database error occurred.',
-    cause: error
-  })
-)
+    cause: error,
+  });

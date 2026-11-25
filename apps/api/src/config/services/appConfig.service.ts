@@ -5,16 +5,14 @@ import type { Environment } from '../schemas/environment.schema';
 
 @Injectable()
 export class AppConfigService {
-  constructor(
-    private readonly configService: ConfigService<Environment, true>
-  ) {}
+  constructor(private readonly configService: ConfigService<Environment, true>) {}
 
   get<K extends keyof Environment>(key: K): Environment[K] {
-    return this.configService.getOrThrow<Environment[K]>(key)
+    return this.configService.getOrThrow<Environment[K]>(key);
   }
 
   get isProduction(): boolean {
-    return this.get("NODE_ENV") === 'production';
+    return this.get('NODE_ENV') === 'production';
   }
 
   get isDevelopment(): boolean {
@@ -38,7 +36,7 @@ export class AppConfigService {
   }
 
   get port(): number {
-    return this.get("API_PORT");
+    return this.get('API_PORT');
   }
 
   get corsOrigins(): readonly string[] {

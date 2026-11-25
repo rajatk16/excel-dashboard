@@ -3,9 +3,7 @@ import { z } from 'zod';
 import { databaseEnvironmentSchema } from '@excel-dashboard/database';
 import { queueEnvironmentSchema } from '@excel-dashboard/queue';
 
-const booleanFromString = z
-  .enum(['true', 'false'])
-  .transform((value) => value === 'true');
+const booleanFromString = z.enum(['true', 'false']).transform((value) => value === 'true');
 
 const corsOriginsSchema = z
   .string()
@@ -33,8 +31,7 @@ const corsOriginsSchema = z
           }
         },
         {
-          message:
-            'CORS origins must be exact HTTP or HTTPS origins without paths.',
+          message: 'CORS origins must be exact HTTP or HTTPS origins without paths.',
         },
       ),
     ),
@@ -45,9 +42,7 @@ export const environmentSchema = z
   .object({
     ...databaseEnvironmentSchema.shape,
     ...queueEnvironmentSchema.shape,
-    NODE_ENV: z
-      .enum(['development', 'test', 'production'])
-      .default('development'),
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
     APP_NAME: z.string().trim().min(1).default('excel-dashboard-api'),
 
@@ -81,51 +76,22 @@ export const environmentSchema = z
       .max(1024 * 1024)
       .default(32 * 1024),
 
-    FORM_PARAMETER_LIMIT: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .max(1000)
-      .default(100),
+    FORM_PARAMETER_LIMIT: z.coerce.number().int().min(1).max(1000).default(100),
 
-    HTTP_REQUEST_TIMEOUT_MS: z.coerce
-      .number()
-      .int()
-      .min(1000)
-      .max(300000)
-      .default(30000),
+    HTTP_REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1000).max(300000).default(30000),
 
-    HTTP_HEADERS_TIMEOUT_MS: z.coerce
-      .number()
-      .int()
-      .min(1000)
-      .max(60000)
-      .default(15000),
+    HTTP_HEADERS_TIMEOUT_MS: z.coerce.number().int().min(1000).max(60000).default(15000),
 
-    HTTP_KEEP_ALIVE_TIMEOUT_MS: z.coerce
-      .number()
-      .int()
-      .min(1000)
-      .max(60000)
-      .default(5000),
+    HTTP_KEEP_ALIVE_TIMEOUT_MS: z.coerce.number().int().min(1000).max(60000).default(5000),
 
-    SHUTDOWN_TIMEOUT_MS: z.coerce
-      .number()
-      .int()
-      .min(1000)
-      .max(120000)
-      .default(15000),
+    SHUTDOWN_TIMEOUT_MS: z.coerce.number().int().min(1000).max(120000).default(15000),
   })
   .superRefine((environment, context) => {
-    if (
-      environment.HTTP_HEADERS_TIMEOUT_MS >
-      environment.HTTP_REQUEST_TIMEOUT_MS
-    ) {
+    if (environment.HTTP_HEADERS_TIMEOUT_MS > environment.HTTP_REQUEST_TIMEOUT_MS) {
       context.addIssue({
         code: 'custom',
         path: ['HTTP_HEADERS_TIMEOUT_MS'],
-        message:
-          'Header timeout must not exceed the request timeout.',
+        message: 'Header timeout must not exceed the request timeout.',
       });
     }
 
@@ -146,9 +112,7 @@ export const environmentSchema = z
 
 export type Environment = z.output<typeof environmentSchema>;
 
-export const validateEnvironment = (
-  configuration: Record<string, unknown>,
-): Environment => {
+export const validateEnvironment = (configuration: Record<string, unknown>): Environment => {
   const result = environmentSchema.safeParse(configuration);
 
   if (!result.success) {
@@ -164,4 +128,4 @@ export const validateEnvironment = (
   }
 
   return result.data;
-}
+};

@@ -1,11 +1,18 @@
-import { type CallHandler, type ExecutionContext, HttpStatus, Injectable, type NestInterceptor, StreamableFile } from "@nestjs/common";
-import type { Reflector } from "@nestjs/core";
-import type { Request, Response } from "express";
-import { map } from "rxjs";
+import {
+  type CallHandler,
+  type ExecutionContext,
+  HttpStatus,
+  Injectable,
+  type NestInterceptor,
+  StreamableFile,
+} from '@nestjs/common';
+import type { Reflector } from '@nestjs/core';
+import type { Request, Response } from 'express';
+import { map } from 'rxjs';
 
-import { RAW_RESPONSE_METADATA_KEY } from "../constants/http.constant";
-import type { RequestContextService } from "../services/requestContext.service";
-import type { ApiSuccessResponse } from "../types/apiResponse.type";
+import { RAW_RESPONSE_METADATA_KEY } from '../constants/http.constant';
+import type { RequestContextService } from '../services/requestContext.service';
+import type { ApiSuccessResponse } from '../types/apiResponse.type';
 
 const RESPONSE_BODYLESS_STATUS_CODES = new Set<number>([
   HttpStatus.NO_CONTENT,
@@ -16,7 +23,7 @@ const RESPONSE_BODYLESS_STATUS_CODES = new Set<number>([
 export class ResponseInterceptor implements NestInterceptor<unknown, unknown> {
   constructor(
     private readonly reflector: Reflector,
-    private readonly requestContextService: RequestContextService
+    private readonly requestContextService: RequestContextService,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler<unknown>) {
@@ -24,10 +31,10 @@ export class ResponseInterceptor implements NestInterceptor<unknown, unknown> {
       return next.handle();
     }
 
-    const rawResponse = this.reflector.getAllAndOverride<boolean>(
-      RAW_RESPONSE_METADATA_KEY,
-      [context.getHandler(), context.getClass()]
-    );
+    const rawResponse = this.reflector.getAllAndOverride<boolean>(RAW_RESPONSE_METADATA_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (rawResponse) {
       return next.handle();
@@ -52,14 +59,13 @@ export class ResponseInterceptor implements NestInterceptor<unknown, unknown> {
           success: true,
           data: data ?? null,
           meta: {
-            requestId:
-              this.requestContextService.requireContext().requestId,
+            requestId: this.requestContextService.requireContext().requestId,
             timestamp: new Date().toISOString(),
           },
         };
 
         return result;
-      })
-    )
+      }),
+    );
   }
 }

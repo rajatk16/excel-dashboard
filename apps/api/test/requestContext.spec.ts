@@ -2,7 +2,6 @@ import { setTimeout } from 'node:timers/promises';
 
 import { RequestContextService } from '../src/common/services/requestContext.service';
 
-
 describe('RequestContextService', () => {
   let service: RequestContextService;
 
@@ -17,9 +16,7 @@ describe('RequestContextService', () => {
   });
 
   it('throws when a required context is missing', () => {
-    expect(() => service.requireContext()).toThrow(
-      'Request context is not available.',
-    );
+    expect(() => service.requireContext()).toThrow('Request context is not available.');
   });
 
   it('makes context available inside a callback', () => {
@@ -78,12 +75,7 @@ describe('RequestContextService', () => {
       },
     );
 
-    await expect(
-      Promise.all([first, second]),
-    ).resolves.toEqual([
-      'request-a',
-      'request-b',
-    ]);
+    await expect(Promise.all([first, second])).resolves.toEqual(['request-a', 'request-b']);
   });
 
   it('restores the outer context after a nested context', () => {

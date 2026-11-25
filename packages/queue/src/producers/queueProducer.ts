@@ -2,11 +2,7 @@ import { Queue } from 'bullmq';
 import type Redis from 'ioredis';
 
 import type { QueueEnvironment } from '../config/queueEnvironment';
-import {
-  closeRedis,
-  connectRedis,
-  createRedisConnection,
-} from '../connections/redisConnection';
+import { closeRedis, connectRedis, createRedisConnection } from '../connections/redisConnection';
 import {
   ACTIVE_JOB_QUEUE_MAP,
   type ActiveJobName,
@@ -15,14 +11,8 @@ import {
   probeJobSchema,
 } from '../contracts/jobContract';
 import { createJobOptions } from '../contracts/jobPolicies';
-import {
-  ACTIVE_QUEUE_NAMES,
-  type ActiveQueueName,
-} from '../contracts/queueName';
-import {
-  QUEUE_ERROR_CODES,
-  QueueError,
-} from '../errors/queueError';
+import { ACTIVE_QUEUE_NAMES, type ActiveQueueName } from '../contracts/queueName';
+import { QUEUE_ERROR_CODES, QueueError } from '../errors/queueError';
 import { createJobId } from '../idempotency/jobId';
 
 export interface QueueProducerOptions {
@@ -41,27 +31,18 @@ export interface EnqueueResult {
   jobName: ActiveJobName;
 }
 
-type ProbeQueue = Queue<
-  ProbeJobPayload,
-  ProbeJobResult,
-  ActiveJobName
->;
+type ProbeQueue = Queue<ProbeJobPayload, ProbeJobResult, ActiveJobName>;
 
 export class QueueProducer {
   private readonly connection: Redis;
 
-  private readonly queues = new Map<
-    ActiveQueueName,
-    ProbeQueue
-  >();
+  private readonly queues = new Map<ActiveQueueName, ProbeQueue>();
 
   private closed = false;
 
   private closePromise: Promise<void> | undefined;
 
-  constructor(
-    private readonly options: QueueProducerOptions,
-  ) {
+  constructor(private readonly options: QueueProducerOptions) {
     this.connection = createRedisConnection({
       environment: options.environment,
 
@@ -87,10 +68,7 @@ export class QueueProducer {
     }
   }
 
-  async enqueue(
-    name: ActiveJobName,
-    payload: ProbeJobPayload,
-  ): Promise<EnqueueResult> {
+  async enqueue(name: ActiveJobName, payload: ProbeJobPayload): Promise<EnqueueResult> {
     this.assertOpen();
 
     const queueName = ACTIVE_JOB_QUEUE_MAP[name];
@@ -167,11 +145,7 @@ export class QueueProducer {
       return existing;
     }
 
-    const queue = new Queue<
-      ProbeJobPayload,
-      ProbeJobResult,
-      ActiveJobName
-    >(name, {
+    const queue = new Queue<ProbeJobPayload, ProbeJobResult, ActiveJobName>(name, {
       connection: this.connection,
 
       prefix: this.options.environment.QUEUE_PREFIX,
@@ -202,9 +176,7 @@ export class QueueProducer {
 
       for (const result of results) {
         if (result.status === 'rejected') {
-          this.options.onError?.(
-            new Error('A queue failed to close.'),
-          );
+          this.options.onError?.(new Error('A queue failed to close.'));
         }
       }
     } finally {

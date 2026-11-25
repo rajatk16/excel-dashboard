@@ -10,12 +10,5 @@
     "tsBuildInfoFile": "./.cache/build.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage",
-    "test",
-    "**/*.spec.ts",
-    "**/*.e2e-spec.ts"
-  ]
+  "exclude": ["node_modules", "dist", "coverage", "test", "**/*.spec.ts", "**/*.e2e-spec.ts"]
 }

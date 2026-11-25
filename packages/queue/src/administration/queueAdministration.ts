@@ -1,8 +1,5 @@
 import type { ActiveQueueName } from '../contracts/queueName';
-import {
-  QUEUE_ERROR_CODES,
-  QueueError,
-} from '../errors/queueError';
+import { QUEUE_ERROR_CODES, QueueError } from '../errors/queueError';
 import type { QueueProducer } from '../producers/queueProducer';
 
 export interface QueueStatistics {
@@ -30,22 +27,12 @@ export interface FailedJobSummary {
 }
 
 export class QueueAdministration {
-  constructor(
-    private readonly producer: QueueProducer,
-  ) {}
+  constructor(private readonly producer: QueueProducer) {}
 
-  async getStatistics(
-    queueName: ActiveQueueName,
-  ): Promise<QueueStatistics> {
+  async getStatistics(queueName: ActiveQueueName): Promise<QueueStatistics> {
     const queue = this.producer.getQueue(queueName);
 
-    const counts = await queue.getJobCounts(
-      'waiting',
-      'active',
-      'delayed',
-      'completed',
-      'failed',
-    );
+    const counts = await queue.getJobCounts('waiting', 'active', 'delayed', 'completed', 'failed');
 
     return {
       waiting: counts.waiting ?? 0,
@@ -67,11 +54,7 @@ export class QueueAdministration {
 
     limit = 20,
   ): Promise<FailedJobSummary[]> {
-    if (
-      !Number.isInteger(limit) ||
-      limit < 1 ||
-      limit > 100
-    ) {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
       throw new Error('Invalid failed-job limit.');
     }
 

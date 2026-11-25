@@ -1,12 +1,13 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { GlobalExceptionFilter } from "./common/filters/globalException.filter";
-import { ResponseInterceptor } from "./common/interceptors/response.interceptor";
-import { RequestContextModule } from "./common/modules/requestContext.module";
-import { AppConfigModule } from "./config/modules/appConfig.module";
-import { DatabaseModule } from "./database/modules/database.module";
-import { HealthModule } from "./health/modules/health.module";
-import { QueueModule } from "./queue/modules/queue.module";
+import { GlobalExceptionFilter } from './common/filters/globalException.filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { RequestContextModule } from './common/modules/requestContext.module';
+import { AppConfigModule } from './config/modules/appConfig.module';
+import { DatabaseModule } from './database/modules/database.module';
+import { HealthModule } from './health/modules/health.module';
+import { QueueModule } from './queue/modules/queue.module';
+import { StorageModule } from './storage/modules/storage.module';
 
 @Module({
   imports: [
@@ -14,11 +15,9 @@ import { QueueModule } from "./queue/modules/queue.module";
     RequestContextModule,
     DatabaseModule,
     QueueModule,
-    HealthModule
+    HealthModule,
+    StorageModule,
   ],
-  providers: [
-    GlobalExceptionFilter,
-    ResponseInterceptor
-  ]
+  providers: [GlobalExceptionFilter, ResponseInterceptor],
 })
 export class AppModule {}

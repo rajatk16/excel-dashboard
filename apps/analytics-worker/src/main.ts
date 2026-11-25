@@ -1,34 +1,29 @@
-import {
-  JOB_NAMES,
-  QUEUE_NAMES,
-  runWorkerProcess,
-} from '@excel-dashboard/queue';
+import { JOB_NAMES, QUEUE_NAMES, runWorkerProcess } from '@excel-dashboard/queue';
+import type { StorageRuntime } from '@excel-dashboard/storage';
 
-import {
-  getEnvironment,
-} from './config/environment';
-import {
-  processProbeJob,
-} from './processors/probe.processor';
+import { getEnvironment } from './config/environment';
+import { initializeStorage } from './infrastructure/storage';
+import { processProbeJob } from './processors/probe.processor';
 
 const bootstrap = async (): Promise<void> => {
+  let storageRuntime: StorageRuntime | undefined;
   const environment = getEnvironment();
 
-  await runWorkerProcess({
-    environment,
-
-    queueName: QUEUE_NAMES.ANALYTICS_PROBE,
-
-    jobName: JOB_NAMES.ANALYTICS_PROBE,
-
-    processor: processProbeJob,
-  });
-}
+  try {
+    storageRuntime = await initializeStorage();
+    await runWorkerProcess({
+      environment,
+      queueName: QUEUE_NAMES.ANALYTICS_PROBE,
+      jobName: JOB_NAMES.ANALYTICS_PROBE,
+      processor: processProbeJob,
+    });
+  } catch {
+    storageRuntime?.close();
+  }
+};
 
 void bootstrap().catch(() => {
-  process.stderr.write(
-    'Analytics worker initialization failed.\n',
-  );
+  process.stderr.write('Analytics worker initialization failed.\n');
 
   process.exitCode = 1;
 });

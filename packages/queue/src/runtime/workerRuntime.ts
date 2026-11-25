@@ -1,8 +1,5 @@
 import type { WorkerEnvironment } from '../config/workerEnvironment';
-import {
-  type ProbeJobProcessor,
-  QueueConsumer,
-} from '../consumers/queueConsumer';
+import { type ProbeJobProcessor, QueueConsumer } from '../consumers/queueConsumer';
 import type { ActiveJobName } from '../contracts/jobContract';
 import type { ActiveQueueName } from '../contracts/queueName';
 import { QueueHealth } from '../monitoring/queueHealth';
@@ -26,14 +23,10 @@ export interface WorkerRuntime {
   stop(): Promise<void>;
 }
 
-export function createWorkerRuntime(
-  options: WorkerRuntimeOptions,
-): WorkerRuntime {
+export function createWorkerRuntime(options: WorkerRuntimeOptions): WorkerRuntime {
   const { environment, queueName, jobName } = options;
 
-  const logger = createWorkerLogger(
-    environment.WORKER_NAME,
-  );
+  const logger = createWorkerLogger(environment.WORKER_NAME);
 
   let stopping = false;
 
@@ -95,21 +88,13 @@ export function createWorkerRuntime(
     port: environment.WORKER_HEALTH_PORT,
 
     isReady: async () => {
-      if (
-        !started ||
-        stopping ||
-        !consumer.isReady()
-      ) {
+      if (!started || stopping || !consumer.isReady()) {
         return false;
       }
 
       const result = await health.check();
 
-      return (
-        !stopping &&
-        consumer.isReady() &&
-        result.status === 'up'
-      );
+      return !stopping && consumer.isReady() && result.status === 'up';
     },
   });
 
@@ -173,12 +158,8 @@ export function createWorkerRuntime(
   };
 }
 
-export async function runWorkerProcess(
-  options: WorkerRuntimeOptions,
-): Promise<void> {
-  const logger = createWorkerLogger(
-    options.environment.WORKER_NAME,
-  );
+export async function runWorkerProcess(options: WorkerRuntimeOptions): Promise<void> {
+  const logger = createWorkerLogger(options.environment.WORKER_NAME);
 
   const runtime = createWorkerRuntime(options);
 

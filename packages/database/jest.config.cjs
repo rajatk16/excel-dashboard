@@ -4,9 +4,7 @@ module.exports = {
 
   testEnvironment: 'node',
 
-  testMatch: [
-    '<rootDir>/test/**/*.spec.ts',
-  ],
+  testMatch: ['<rootDir>/test/**/*.spec.ts'],
 
   transform: {
     '^.+\\.ts$': [
@@ -17,29 +15,15 @@ module.exports = {
     ],
   },
 
-  moduleFileExtensions: [
-    'ts',
-    'js',
-    'json',
-  ],
+  moduleFileExtensions: ['ts', 'js', 'json'],
 
   clearMocks: true,
 
   restoreMocks: true,
 
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/generated/**',
-    '!src/**/*.types.ts',
-    '!src/index.ts',
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/generated/**', '!src/**/*.types.ts', '!src/index.ts'],
 
-  coverageDirectory:
-    '<rootDir>/coverage',
+  coverageDirectory: '<rootDir>/coverage',
 
-  coverageReporters: [
-    'text',
-    'lcov',
-    'json-summary',
-  ],
+  coverageReporters: ['text', 'lcov', 'json-summary'],
 };

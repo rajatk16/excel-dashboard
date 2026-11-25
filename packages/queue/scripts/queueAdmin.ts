@@ -13,9 +13,7 @@ import {
 } from '../src';
 
 function print(value: unknown): void {
-  process.stdout.write(
-    `${JSON.stringify(value, null, 2)}\n`,
-  );
+  process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 }
 
 function assertMutationAllowed(): void {
@@ -75,17 +73,13 @@ async function main(): Promise<void> {
 
     switch (command) {
       case 'stats': {
-        print(
-          await administration.getStatistics(queueName),
-        );
+        print(await administration.getStatistics(queueName));
 
         return;
       }
 
       case 'failed': {
-        print(
-          await administration.listFailedJobs(queueName),
-        );
+        print(await administration.listFailedJobs(queueName));
 
         return;
       }
@@ -97,10 +91,7 @@ async function main(): Promise<void> {
           throw new Error('A job ID is required.');
         }
 
-        await administration.retryFailedJob(
-          queueName,
-          argument,
-        );
+        await administration.retryFailedJob(queueName, argument);
 
         print({
           retried: true,

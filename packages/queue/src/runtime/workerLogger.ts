@@ -1,12 +1,6 @@
-export type WorkerLogLevel =
-  | 'info'
-  | 'warn'
-  | 'error';
+export type WorkerLogLevel = 'info' | 'warn' | 'error';
 
-export type WorkerLogFields = Record<
-  string,
-  string | number | boolean | null | undefined
->;
+export type WorkerLogFields = Record<string, string | number | boolean | null | undefined>;
 
 export interface WorkerLogger {
   info(message: string, fields?: WorkerLogFields): void;
@@ -16,9 +10,7 @@ export interface WorkerLogger {
   error(message: string, fields?: WorkerLogFields): void;
 }
 
-export function createWorkerLogger(
-  workerName: string,
-): WorkerLogger {
+export function createWorkerLogger(workerName: string): WorkerLogger {
   function write(
     level: WorkerLogLevel,
 
@@ -38,10 +30,7 @@ export function createWorkerLogger(
       timestamp: new Date().toISOString(),
     });
 
-    const stream =
-      level === 'error'
-        ? process.stderr
-        : process.stdout;
+    const stream = level === 'error' ? process.stderr : process.stdout;
 
     stream.write(`${entry}\n`);
   }

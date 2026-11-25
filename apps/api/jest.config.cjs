@@ -4,15 +4,9 @@ module.exports = {
 
   testEnvironment: 'node',
 
-  testMatch: [
-    '<rootDir>/src/**/*.spec.ts',
-    '<rootDir>/test/**/*.spec.ts',
-  ],
+  testMatch: ['<rootDir>/src/**/*.spec.ts', '<rootDir>/test/**/*.spec.ts'],
 
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 
   transform: {
     '^.+\\.ts$': [
@@ -23,31 +17,16 @@ module.exports = {
     ],
   },
 
-  moduleFileExtensions: [
-    'ts',
-    'js',
-    'json',
-  ],
+  moduleFileExtensions: ['ts', 'js', 'json'],
 
   clearMocks: true,
 
   restoreMocks: true,
 
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.module.ts',
-    '!src/**/*.types.ts',
-    '!src/main.ts',
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.module.ts', '!src/**/*.types.ts', '!src/main.ts'],
 
   coverageDirectory: '<rootDir>/coverage',
 
-  coverageReporters: [
-    'text',
-    'lcov',
-    'json-summary',
-  ],
-  setupFiles: [
-    '<rootDir>/test/setup-environment.cjs',
-  ],
+  coverageReporters: ['text', 'lcov', 'json-summary'],
+  setupFiles: ['<rootDir>/test/setup-environment.cjs'],
 };

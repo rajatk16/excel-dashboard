@@ -1,14 +1,16 @@
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient } from '../generated/prisma/client';
 
-import type { DatabaseClientHandle, DatabaseClientOptions, DatabasePoolStatistics } from "./databaseClient.types";
+import type {
+  DatabaseClientHandle,
+  DatabaseClientOptions,
+  DatabasePoolStatistics,
+} from './databaseClient.types';
 
-export const createDatabaseClient = (
-  options: DatabaseClientOptions
-): DatabaseClientHandle => {
-  const {environment, applicationName} = options;
+export const createDatabaseClient = (options: DatabaseClientOptions): DatabaseClientHandle => {
+  const { environment, applicationName } = options;
 
   const pool = new Pool({
     connectionString: environment.DATABASE_URL,
@@ -19,7 +21,7 @@ export const createDatabaseClient = (
     statement_timeout: environment.DATABASE_STATEMENT_TIMEOUT_MS,
     lock_timeout: environment.DATABASE_LOCK_TIMEOUT_MS,
     idle_in_transaction_session_timeout: environment.DATABASE_IDLE_TRANSACTION_TIMEOUT_MS,
-    allowExitOnIdle: false
+    allowExitOnIdle: false,
   });
 
   pool.on('error', (error: Error) => {
@@ -27,15 +29,15 @@ export const createDatabaseClient = (
   });
 
   const adapter = new PrismaPg(pool, {
-    disposeExternalPool: false
+    disposeExternalPool: false,
   });
 
   const client = new PrismaClient({
     adapter,
     transactionOptions: {
       maxWait: environment.DATABASE_TRANSACTION_MAX_WAIT_MS,
-      timeout: environment.DATABASE_TRANSACTION_TIMEOUT_MS
-    }
+      timeout: environment.DATABASE_TRANSACTION_TIMEOUT_MS,
+    },
   });
 
   let disconnectPromise: Promise<void> | undefined;
@@ -64,8 +66,8 @@ export const createDatabaseClient = (
       return {
         totalConnections: pool.totalCount,
         idleConnections: pool.idleCount,
-        waitingRequests: pool.waitingCount
-      }
-    }
-  }
-}
+        waitingRequests: pool.waitingCount,
+      };
+    },
+  };
+};
