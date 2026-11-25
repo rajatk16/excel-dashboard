@@ -28,13 +28,13 @@ Base URL: `http://localhost:4000/api/v1`
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `npm run dev:api` | Start development server |
-| `npm run build:api` | Build production application |
-| `npm run start:api` | Start compiled application |
-| `npm run test:api` | Run unit tests |
-| `npm run test:api:e2e` | Run HTTP integration tests |
+| Command                | Description                  |
+| ---------------------- | ---------------------------- |
+| `npm run dev:api`      | Start development server     |
+| `npm run build:api`    | Build production application |
+| `npm run start:api`    | Start compiled application   |
+| `npm run test:api`     | Run unit tests               |
+| `npm run test:api:e2e` | Run HTTP integration tests   |
 
 ## Architecture
 
@@ -64,11 +64,11 @@ Never commit secrets or local environment files.
 
 ## Health endpoints
 
-| Endpoint | Description |
-|---|---|
+| Endpoint         | Description             |
+| ---------------- | ----------------------- |
 | `/api/v1/health` | Application information |
-| `/health/live` | Process liveness |
-| `/health/ready` | Application readiness |
+| `/health/live`   | Process liveness        |
+| `/health/ready`  | Application readiness   |
 
 ## Security
 

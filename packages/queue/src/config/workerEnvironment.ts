@@ -1,6 +1,6 @@
-import z from "zod";
+import z from 'zod';
 
-import { queueEnvironmentSchema } from "./queueEnvironment";
+import { queueEnvironmentSchema } from './queueEnvironment';
 
 export const workerEnvironmentSchema = queueEnvironmentSchema.extend({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -11,20 +11,20 @@ export const workerEnvironmentSchema = queueEnvironmentSchema.extend({
   WORKER_LOCK_DURATION_MS: z.coerce.number().int().min(10000).max(300000).default(30000),
   WORKER_STALLED_INTERVAL_MS: z.coerce.number().int().min(5000).max(300000).default(30000),
   WORKER_MAX_STALLED_COUNT: z.coerce.number().int().min(0).max(5).default(1),
-})
+});
 
 export type WorkerEnvironment = z.output<typeof workerEnvironmentSchema>;
 
-export const validateWorkerEnvironment = (
-  input: Record<string, unknown>
-): WorkerEnvironment => {
+export const validateWorkerEnvironment = (input: Record<string, unknown>): WorkerEnvironment => {
   const result = workerEnvironmentSchema.safeParse(input);
 
   if (!result.success) {
-    const issues = result.error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join('\n');
+    const issues = result.error.issues
+      .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+      .join('\n');
 
     throw new Error(`Invalid worker configuration:\n${issues}`);
   }
 
   return result.data;
-}
+};

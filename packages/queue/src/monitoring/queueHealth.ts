@@ -1,11 +1,7 @@
 import type Redis from 'ioredis';
 
 import type { QueueEnvironment } from '../config/queueEnvironment';
-import {
-  closeRedis,
-  connectRedis,
-  createRedisConnection,
-} from '../connections/redisConnection';
+import { closeRedis, connectRedis, createRedisConnection } from '../connections/redisConnection';
 
 export interface QueueHealthResult {
   status: 'up' | 'down';
@@ -52,9 +48,7 @@ export class QueueHealth {
             resolve({
               status: 'down',
 
-              latencyMs: Math.round(
-                performance.now() - startedAt,
-              ),
+              latencyMs: Math.round(performance.now() - startedAt),
             });
           }, this.environment.QUEUE_HEALTH_TIMEOUT_MS);
         }),
@@ -91,17 +85,13 @@ export class QueueHealth {
       return {
         status: response === 'PONG' ? 'up' : 'down',
 
-        latencyMs: Math.round(
-          performance.now() - startedAt,
-        ),
+        latencyMs: Math.round(performance.now() - startedAt),
       };
     } catch {
       return {
         status: 'down',
 
-        latencyMs: Math.round(
-          performance.now() - startedAt,
-        ),
+        latencyMs: Math.round(performance.now() - startedAt),
       };
     }
   }

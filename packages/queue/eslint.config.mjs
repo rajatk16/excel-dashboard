@@ -4,13 +4,13 @@ export default [
   ...createNodeConfig({
     tsconfigRootDir: import.meta.dirname,
     typeAware: true,
-    workspaceType: 'library'
+    workspaceType: 'library',
   }),
   {
-    files: ["test/**/*.ts"],
+    files: ['test/**/*.ts'],
     languageOptions: {
       globals: {
-        describe: "readonly",
+        describe: 'readonly',
         it: 'readonly',
         test: 'readonly',
         expect: 'readonly',
@@ -19,7 +19,7 @@ export default [
         afterAll: 'readonly',
         beforeEach: 'readonly',
         afterEach: 'readonly',
-      }
-    }
-  }
-]
+      },
+    },
+  },
+];

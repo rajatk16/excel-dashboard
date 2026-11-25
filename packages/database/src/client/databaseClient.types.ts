@@ -1,5 +1,5 @@
-import type { DatabaseEnvironment } from "../config/databaseEnvironment";
-import type { Prisma, PrismaClient } from "../generated/prisma/client";
+import type { DatabaseEnvironment } from '../config/databaseEnvironment';
+import type { Prisma, PrismaClient } from '../generated/prisma/client';
 
 export interface DatabaseClientOptions {
   environment: DatabaseEnvironment;

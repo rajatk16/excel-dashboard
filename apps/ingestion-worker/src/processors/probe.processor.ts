@@ -1,8 +1,4 @@
-import type {
-  JobExecutionContext,
-  ProbeJobPayload,
-  ProbeJobResult,
-} from '@excel-dashboard/queue';
+import type { JobExecutionContext, ProbeJobPayload, ProbeJobResult } from '@excel-dashboard/queue';
 
 export const processProbeJob = async (
   payload: ProbeJobPayload,
@@ -22,4 +18,4 @@ export const processProbeJob = async (
   await context.updateProgress(100);
 
   return result;
-}
+};

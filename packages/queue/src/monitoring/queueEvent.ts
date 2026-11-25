@@ -2,19 +2,13 @@ import { QueueEvents } from 'bullmq';
 import type Redis from 'ioredis';
 
 import type { QueueEnvironment } from '../config/queueEnvironment';
-import {
-  closeRedis,
-  createRedisConnection,
-} from '../connections/redisConnection';
+import { closeRedis, createRedisConnection } from '../connections/redisConnection';
 import type { ActiveQueueName } from '../contracts/queueName';
 
 export interface QueueEvent {
   queueName: ActiveQueueName;
 
-  event:
-    | 'completed'
-    | 'failed'
-    | 'stalled';
+  event: 'completed' | 'failed' | 'stalled';
 
   jobId: string;
 }

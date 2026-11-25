@@ -1,26 +1,16 @@
-import {
-  HttpStatus,
-} from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
-import {
-  DATABASE_ERROR_CODES,
-  tryNormalizeDatabaseError,
-} from '@excel-dashboard/database';
+import { DATABASE_ERROR_CODES, tryNormalizeDatabaseError } from '@excel-dashboard/database';
 
-import type {
-  ApiErrorBody,
-} from '../types/apiResponse.type';
+import type { ApiErrorBody } from '../types/apiResponse.type';
 
 export interface MappedDatabaseException {
   statusCode: number;
   error: ApiErrorBody;
 }
 
-export function mapDatabaseException(
-  exception: unknown,
-): MappedDatabaseException | undefined {
-  const databaseError =
-    tryNormalizeDatabaseError(exception);
+export function mapDatabaseException(exception: unknown): MappedDatabaseException | undefined {
+  const databaseError = tryNormalizeDatabaseError(exception);
 
   if (!databaseError) {
     return undefined;
@@ -32,8 +22,7 @@ export function mapDatabaseException(
         statusCode: HttpStatus.CONFLICT,
         error: {
           code: 'RESOURCE_ALREADY_EXISTS',
-          message:
-            'A resource with the supplied values already exists.',
+          message: 'A resource with the supplied values already exists.',
         },
       };
 
@@ -42,8 +31,7 @@ export function mapDatabaseException(
         statusCode: HttpStatus.CONFLICT,
         error: {
           code: 'RESOURCE_RELATIONSHIP_CONFLICT',
-          message:
-            'The operation conflicts with a related resource.',
+          message: 'The operation conflicts with a related resource.',
         },
       };
 
@@ -52,8 +40,7 @@ export function mapDatabaseException(
         statusCode: HttpStatus.NOT_FOUND,
         error: {
           code: 'RESOURCE_NOT_FOUND',
-          message:
-            'The requested resource was not found.',
+          message: 'The requested resource was not found.',
         },
       };
 
@@ -62,32 +49,27 @@ export function mapDatabaseException(
         statusCode: HttpStatus.CONFLICT,
         error: {
           code: 'CONCURRENT_MODIFICATION',
-          message:
-            'The resource was modified concurrently. Please try again.',
+          message: 'The resource was modified concurrently. Please try again.',
         },
       };
 
     case DATABASE_ERROR_CODES.CONNECTION_UNAVAILABLE:
     case DATABASE_ERROR_CODES.CONNECTION_POOL_TIMEOUT:
       return {
-        statusCode:
-          HttpStatus.SERVICE_UNAVAILABLE,
+        statusCode: HttpStatus.SERVICE_UNAVAILABLE,
         error: {
           code: 'DATABASE_UNAVAILABLE',
-          message:
-            'The service is temporarily unavailable.',
+          message: 'The service is temporarily unavailable.',
         },
       };
 
     case DATABASE_ERROR_CODES.QUERY_TIMEOUT:
     case DATABASE_ERROR_CODES.TRANSACTION_TIMEOUT:
       return {
-        statusCode:
-          HttpStatus.SERVICE_UNAVAILABLE,
+        statusCode: HttpStatus.SERVICE_UNAVAILABLE,
         error: {
           code: 'DATABASE_OPERATION_TIMEOUT',
-          message:
-            'The operation could not be completed in time.',
+          message: 'The operation could not be completed in time.',
         },
       };
 
@@ -95,12 +77,10 @@ export function mapDatabaseException(
     case DATABASE_ERROR_CODES.INVALID_VALUE:
     case DATABASE_ERROR_CODES.UNKNOWN:
       return {
-        statusCode:
-          HttpStatus.INTERNAL_SERVER_ERROR,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
         error: {
           code: 'INTERNAL_SERVER_ERROR',
-          message:
-            'An unexpected error occurred.',
+          message: 'An unexpected error occurred.',
         },
       };
   }

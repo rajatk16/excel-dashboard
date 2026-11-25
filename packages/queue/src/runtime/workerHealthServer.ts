@@ -1,8 +1,4 @@
-import {
-  createServer,
-  type Server,
-  type ServerResponse,
-} from 'node:http';
+import { createServer, type Server, type ServerResponse } from 'node:http';
 
 export interface WorkerHealthServerOptions {
   host: string;
@@ -33,9 +29,7 @@ function respond(
 export class WorkerHealthServer {
   private readonly server: Server;
 
-  constructor(
-    private readonly options: WorkerHealthServerOptions,
-  ) {
+  constructor(private readonly options: WorkerHealthServerOptions) {
     this.server = createServer((request, response) => {
       if (request.method !== 'GET') {
         respond(response, 405, {
@@ -113,9 +107,7 @@ export class WorkerHealthServer {
     });
   }
 
-  private async handleReadiness(
-    response: ServerResponse,
-  ): Promise<void> {
+  private async handleReadiness(response: ServerResponse): Promise<void> {
     let ready = false;
 
     try {

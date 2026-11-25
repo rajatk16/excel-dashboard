@@ -6,9 +6,7 @@ module.exports = {
 
   rootDir: '..',
 
-  testMatch: [
-    '<rootDir>/test/**/*integration-spec.ts',
-  ],
+  testMatch: ['<rootDir>/test/**/*integration-spec.ts'],
 
   collectCoverage: false,
 

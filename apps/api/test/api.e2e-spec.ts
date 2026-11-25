@@ -1,20 +1,9 @@
 import type { Server } from 'node:http';
 
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { Test } from '@nestjs/testing';
-import {
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import request from 'supertest';
 
 import { AppModule } from '../src/app.module';
@@ -72,9 +61,7 @@ class TestController {
 
   @Post('empty')
   @HttpCode(HttpStatus.NO_CONTENT)
-  empty(): void {
-
-  }
+  empty(): void {}
 }
 
 describe('API foundation (e2e)', () => {
@@ -88,22 +75,21 @@ describe('API foundation (e2e)', () => {
     })
       .overrideProvider(PrismaService)
       .useValue({
-      client: {},
-    })
-    .overrideProvider(DatabaseHealthService)
-    .useValue({
-      check: jest.fn().mockResolvedValue({
-        status: 'up',
-        latencyMs: 1,
-      }),
-    })
-    .compile();
+        client: {},
+      })
+      .overrideProvider(DatabaseHealthService)
+      .useValue({
+        check: jest.fn().mockResolvedValue({
+          status: 'up',
+          latencyMs: 1,
+        }),
+      })
+      .compile();
 
-    app =
-      moduleRef.createNestApplication<NestExpressApplication>({
-        bodyParser: false,
-        logger: false,
-      });
+    app = moduleRef.createNestApplication<NestExpressApplication>({
+      bodyParser: false,
+      logger: false,
+    });
 
     configureApplication(app);
 
@@ -139,12 +125,9 @@ describe('API foundation (e2e)', () => {
     });
 
     it('returns a raw liveness response', async () => {
-      await request(server)
-        .get('/health/live')
-        .expect(200)
-        .expect({
-          status: 'ok',
-        });
+      await request(server).get('/health/live').expect(200).expect({
+        status: 'ok',
+      });
     });
 
     it('returns a raw readiness response', async () => {
@@ -160,9 +143,7 @@ describe('API foundation (e2e)', () => {
     });
 
     it('does not expose an unversioned application endpoint', async () => {
-      await request(server)
-        .get('/api/health')
-        .expect(404);
+      await request(server).get('/api/health').expect(404);
     });
   });
 
@@ -243,9 +224,7 @@ describe('API foundation (e2e)', () => {
           expect(Array.isArray(details)).toBe(true);
           expect(
             Array.isArray(details) &&
-              details.some(
-                (detail) => isRecord(detail) && detail.field === 'name',
-              ),
+              details.some((detail) => isRecord(detail) && detail.field === 'name'),
           ).toBe(true);
         });
     });
@@ -361,17 +340,12 @@ describe('API foundation (e2e)', () => {
             },
           });
 
-          expect(JSON.stringify(body)).not.toContain(
-            'sensitive-internal-information',
-          );
+          expect(JSON.stringify(body)).not.toContain('sensitive-internal-information');
         });
     });
 
     it('does not wrap a 204 response', async () => {
-      await request(server)
-        .post('/api/v1/test/empty')
-        .expect(204)
-        .expect('');
+      await request(server).post('/api/v1/test/empty').expect(204).expect('');
     });
   });
 
@@ -389,9 +363,7 @@ describe('API foundation (e2e)', () => {
       await request(server)
         .get('/health/live')
         .expect((response) => {
-          expect(
-            response.headers['x-powered-by'],
-          ).toBeUndefined();
+          expect(response.headers['x-powered-by']).toBeUndefined();
         });
     });
 
@@ -399,10 +371,7 @@ describe('API foundation (e2e)', () => {
       await request(server)
         .get('/api/v1/health')
         .set('Origin', 'http://localhost:3000')
-        .expect(
-          'access-control-allow-origin',
-          'http://localhost:3000',
-        )
+        .expect('access-control-allow-origin', 'http://localhost:3000')
         .expect(200);
     });
 
@@ -411,9 +380,7 @@ describe('API foundation (e2e)', () => {
         .get('/api/v1/health')
         .set('Origin', 'https://untrusted.example.com')
         .expect((response) => {
-          expect(
-            response.headers['access-control-allow-origin'],
-          ).toBeUndefined();
+          expect(response.headers['access-control-allow-origin']).toBeUndefined();
         });
     });
 
@@ -422,10 +389,7 @@ describe('API foundation (e2e)', () => {
         .options('/api/v1/test')
         .set('Origin', 'http://localhost:3000')
         .set('Access-Control-Request-Method', 'POST')
-        .set(
-          'Access-Control-Request-Headers',
-          'content-type,authorization',
-        )
+        .set('Access-Control-Request-Headers', 'content-type,authorization')
         .expect(204);
     });
   });
@@ -446,9 +410,7 @@ describe('API foundation (e2e)', () => {
           });
         });
 
-      await request(server)
-        .get('/health/live')
-        .expect(200);
+      await request(server).get('/health/live').expect(200);
     });
   });
 });

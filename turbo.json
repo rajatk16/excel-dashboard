@@ -8,24 +8,13 @@
     "tsconfig.json",
     "packages/typescript-config/*.json"
   ],
-  "globalEnv": [
-    "NODE_ENV"
-  ],
+  "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        "dist/**",
-        "build/**",
-        "!.env*"
-      ],
-      "env": [
-        "VITE_*"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", "build/**", "!.env*"],
+      "env": ["VITE_*"]
     },
     "dev": {
       "dependsOn": ["^build"],
@@ -64,7 +53,8 @@
         "QUEUE_*",
         "WORKER_*",
         "INGESTION_WORKER_*",
-        "ANALYTICS_WORKER_*"
+        "ANALYTICS_WORKER_*",
+        "SEAWEEDFS_VERSION"
       ]
     },
     "lint": {
@@ -95,10 +85,7 @@
         "prisma.config.ts",
         "$TURBO_ROOT$/packages/typescript-config/**"
       ],
-      "outputs": [
-        "dist/**",
-        "src/generated/prisma/**"
-      ]
+      "outputs": ["dist/**", "src/generated/prisma/**"]
     }
   }
 }

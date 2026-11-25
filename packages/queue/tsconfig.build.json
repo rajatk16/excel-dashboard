@@ -10,14 +10,6 @@
     "types": ["node"],
     "tsBuildInfoFile": "./.cache/build.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage",
-    "scripts",
-    "test"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "coverage", "scripts", "test"]
 }

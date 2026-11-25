@@ -1,22 +1,20 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 
-import { Injectable, type NestMiddleware } from "@nestjs/common";
-import type {NextFunction,Request, Response} from 'express';
+import { Injectable, type NestMiddleware } from '@nestjs/common';
+import type { NextFunction, Request, Response } from 'express';
 
-import { MAX_REQUEST_ID_LENGTH, REQUEST_ID_HEADER, REQUEST_ID_PATTERN } from "../constants/http.constant";
-import type { RequestContextService } from "../services/requestContext.service";
+import {
+  MAX_REQUEST_ID_LENGTH,
+  REQUEST_ID_HEADER,
+  REQUEST_ID_PATTERN,
+} from '../constants/http.constant';
+import type { RequestContextService } from '../services/requestContext.service';
 
 @Injectable()
 export class RequestContextMiddleware implements NestMiddleware {
-  constructor(
-    private readonly requestContextService: RequestContextService
-  ) {}
+  constructor(private readonly requestContextService: RequestContextService) {}
 
-  use(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ): void {
+  use(request: Request, response: Response, next: NextFunction): void {
     const requestId = this.resolveRequestId(request);
 
     response.setHeader(REQUEST_ID_HEADER, requestId);
@@ -25,9 +23,9 @@ export class RequestContextMiddleware implements NestMiddleware {
       {
         requestId,
         startedAt: performance.now(),
-        method: request.method
+        method: request.method,
       },
-      next
+      next,
     );
   }
 

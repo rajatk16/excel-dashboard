@@ -3,22 +3,11 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./dist",
-    "types": [
-      "node", "jest"
-    ],
+    "types": ["node", "jest"],
     "noEmit": true,
     "verbatimModuleSyntax": false,
     "tsBuildInfoFile": "./.cache/typecheck.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts",
-    "prisma/**/*.ts",
-    "test/**/*.ts",
-    "prisma.config.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage"
-  ]
+  "include": ["src/**/*.ts", "prisma/**/*.ts", "test/**/*.ts", "prisma.config.ts"],
+  "exclude": ["node_modules", "dist", "coverage"]
 }

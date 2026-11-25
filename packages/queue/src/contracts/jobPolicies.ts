@@ -1,8 +1,8 @@
-import type { JobsOptions } from "bullmq";
+import type { JobsOptions } from 'bullmq';
 
-import type { QueueEnvironment } from "../config/queueEnvironment";
+import type { QueueEnvironment } from '../config/queueEnvironment';
 
-import { JOB_NAMES, type JobName } from "./jobContract";
+import { JOB_NAMES, type JobName } from './jobContract';
 
 interface JobPolicy {
   attempts: number;
@@ -12,7 +12,7 @@ interface JobPolicy {
 export const JOB_POLICIES = {
   [JOB_NAMES.INGESTION_PROBE]: {
     attempts: 3,
-    backoffDelayMs: 1000
+    backoffDelayMs: 1000,
   },
   [JOB_NAMES.ANALYTICS_PROBE]: {
     attempts: 3,
@@ -38,15 +38,12 @@ export const JOB_POLICIES = {
     attempts: 3,
     backoffDelayMs: 5000,
   },
-} satisfies Record<JobName, JobPolicy>
+} satisfies Record<JobName, JobPolicy>;
 
-export const createJobOptions = (
-  name: JobName,
-  environment: QueueEnvironment
-): JobsOptions => {
+export const createJobOptions = (name: JobName, environment: QueueEnvironment): JobsOptions => {
   const policy = JOB_POLICIES[name];
 
-  if(!policy) {
+  if (!policy) {
     throw new Error('Policy not found');
   }
 
@@ -55,7 +52,7 @@ export const createJobOptions = (
     backoff: {
       type: 'exponential',
       delay: policy.backoffDelayMs,
-      jitter: 0.5
+      jitter: 0.5,
     },
     removeOnComplete: {
       age: environment.QUEUE_COMPLETED_RETENTION_SECONDS,
@@ -66,5 +63,5 @@ export const createJobOptions = (
       count: environment.QUEUE_FAILED_RETENTION_COUNT,
     },
     stackTraceLimit: 20,
-  }
-}
+  };
+};

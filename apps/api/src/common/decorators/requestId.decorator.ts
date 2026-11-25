@@ -1,8 +1,7 @@
+import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
+import type { Response } from 'express';
 
-import { createParamDecorator, type ExecutionContext } from "@nestjs/common";
-import type { Response } from "express";
-
-import { REQUEST_ID_HEADER } from "../constants/http.constant";
+import { REQUEST_ID_HEADER } from '../constants/http.constant';
 
 export const RequestId = createParamDecorator(
   (_data: unknown, context: ExecutionContext): string => {
@@ -15,5 +14,5 @@ export const RequestId = createParamDecorator(
     }
 
     return requestId;
-  }
-)
+  },
+);

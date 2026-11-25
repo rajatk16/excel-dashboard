@@ -32,9 +32,7 @@ export interface ApiErrorResponse {
   meta: ApiResponseMeta;
 }
 
-export type ApiResponse<T> =
-  | ApiSuccessResponse<T>
-  | ApiErrorResponse;
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
 
 export interface CursorPage<T> {
   items: T[];

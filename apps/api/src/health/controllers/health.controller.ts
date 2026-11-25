@@ -8,14 +8,16 @@ import {
 } from '@nestjs/common';
 
 import { RawResponse } from '../../common/decorators/rawResponse.decorator';
-import type { HealthService, HealthStatus, LivenessStatus, ReadinessStatus } from '../services/health.service';
+import type {
+  HealthService,
+  HealthStatus,
+  LivenessStatus,
+  ReadinessStatus,
+} from '../services/health.service';
 
 @Controller('health')
 export class HealthController {
-  constructor(
-    private readonly healthService:
-      HealthService,
-  ) {}
+  constructor(private readonly healthService: HealthService) {}
 
   @Get()
   @Header('Cache-Control', 'no-store')
@@ -35,10 +37,8 @@ export class HealthController {
   @Version(VERSION_NEUTRAL)
   @RawResponse()
   @Header('Cache-Control', 'no-store')
-  async getReadiness():
-    Promise<ReadinessStatus> {
-    const readiness =
-      await this.healthService.getReadiness();
+  async getReadiness(): Promise<ReadinessStatus> {
+    const readiness = await this.healthService.getReadiness();
 
     if (readiness.status !== 'ready') {
       throw new ServiceUnavailableException();

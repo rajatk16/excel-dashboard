@@ -1,5 +1,5 @@
-import type { DatabaseTransactionClient } from "../client/databaseClient.types";
-import type { Prisma } from "../generated/prisma/client";
+import type { DatabaseTransactionClient } from '../client/databaseClient.types';
+import type { Prisma } from '../generated/prisma/client';
 
 export interface TransactionOptions {
   isolationLevel?: Prisma.TransactionIsolationLevel;
@@ -15,6 +15,4 @@ export interface TransactionRetryOptions extends TransactionOptions {
   maxDelayMs?: number;
 }
 
-export type TransactionCallback<T> =  (
-  transaction: DatabaseTransactionClient
-) => Promise<T>;
+export type TransactionCallback<T> = (transaction: DatabaseTransactionClient) => Promise<T>;

@@ -55,7 +55,10 @@
     "redis:logs": "docker compose -f infrastructure/docker/redis/compose.yml logs -f redis",
     "queue:admin": "npm run queue:admin --workspace=@excel-dashboard/queue --",
     "start:ingestion": "npm run start --workspace=@excel-dashboard/ingestion-worker",
-    "start:analytics": "npm run start --workspace=@excel-dashboard/analytics-worker"
+    "start:analytics": "npm run start --workspace=@excel-dashboard/analytics-worker",
+    "storage:up": "docker compose -f infrastructure/docker/storage/compose.yaml --env-file infrastructure/docker/storage/.env up -d",
+    "storage:down": "docker compose -f infrastructure/docker/storage/compose.yaml --env-file infrastructure/docker/storage/.env down",
+    "storage:logs": "docker compose -f infrastructure/docker/storage/compose.yaml --env-file infrastructure/docker/storage/.env logs -f"
   },
   "devDependencies": {
     "@excel-dashboard/eslint-config": "0.0.0",
